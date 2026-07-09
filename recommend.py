@@ -251,3 +251,110 @@ def fetch_tmdb_info(movie_title):
         print(f"TMDB deep metadata request failed for '{movie_title}': {e}")
         
     return fallback_data
+
+
+def fetch_wikipedia_poster(movie_title, year=None):
+    """
+    Fetches the poster URL of a movie directly from Wikipedia's uploads CDN
+    using Wikipedia's open query APIs. Excellent fallback for blocked environments.
+    """
+    import urllib.parse
+    headers = {'User-Agent': 'CinemaScaleApp/1.0 (nikhilsri8052@gmail.com)'}
+    
+    # 1. Build search query
+    search_query = f"{movie_title}"
+    if year:
+        search_query += f" {year} film"
+    else:
+        search_query += " film"
+        
+    search_url = "https://en.wikipedia.org/w/api.php"
+    search_params = {
+        'action': 'query',
+        'list': 'search',
+        'srsearch': search_query,
+        'format': 'json'
+    }
+    
+    try:
+        r = requests.get(search_url, params=search_params, headers=headers, timeout=5).json()
+        search_results = r.get('query', {}).get('search', [])
+        if not search_results:
+            # Try without year as fallback search
+            if year:
+                search_params['srsearch'] = f"{movie_title} film"
+                r = requests.get(search_url, params=search_params, headers=headers, timeout=5).json()
+                search_results = r.get('query', {}).get('search', [])
+            
+            if not search_results:
+                return None
+            
+        page_title = search_results[0]['title']
+        
+        # 2. Get list of all images on page with continuation
+        images = []
+        params = {
+            'action': 'query',
+            'titles': page_title,
+            'prop': 'images',
+            'format': 'json',
+            'imlimit': 'max'
+        }
+        
+        while True:
+            r = requests.get(search_url, params=params, headers=headers, timeout=5).json()
+            pages = r.get('query', {}).get('pages', {})
+            page_id = list(pages.keys())[0]
+            page_data = pages[page_id]
+            
+            if 'images' in page_data:
+                images.extend(page_data['images'])
+                
+            if 'continue' in r:
+                params.update(r['continue'])
+            else:
+                break
+        
+        # 3. Find the poster image
+        poster_file = None
+        # Priority 1: Contains 'poster' and is an image extension
+        for img in images:
+            title = img.get('title', '')
+            title_lower = title.lower()
+            if 'poster' in title_lower and (title_lower.endswith('.jpg') or title_lower.endswith('.jpeg') or title_lower.endswith('.png')):
+                poster_file = title
+                break
+                
+        if not poster_file:
+            # Priority 2: First non-svg/commons image
+            for img in images:
+                title = img.get('title', '')
+                title_lower = title.lower()
+                if (title_lower.endswith('.jpg') or title_lower.endswith('.jpeg') or title_lower.endswith('.png')):
+                    if 'commons-logo' not in title_lower and 'wikidata' not in title_lower and 'icon' not in title_lower:
+                        poster_file = title
+                        break
+                        
+        if not poster_file:
+            return None
+            
+        # 4. Get the direct upload CDN URL
+        resolve_params = {
+            'action': 'query',
+            'titles': poster_file,
+            'prop': 'imageinfo',
+            'iiprop': 'url',
+            'format': 'json'
+        }
+        r = requests.get(search_url, params=resolve_params, headers=headers, timeout=5).json()
+        pages = r.get('query', {}).get('pages', {})
+        file_id = list(pages.keys())[0]
+        info = pages[file_id].get('imageinfo', [])
+        if info:
+            return info[0].get('url')
+            
+    except Exception as e:
+        print(f"Wikipedia poster search failed for '{movie_title}': {e}")
+    
+    return None
+

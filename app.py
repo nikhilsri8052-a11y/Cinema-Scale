@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy
 from sqlalchemy import create_engine, text
 from werkzeug.security import check_password_hash, generate_password_hash
-from recommend import load_and_train_model, get_recommendations, fetch_tmdb_info, fetch_poster_by_tmdb_id
+from recommend import load_and_train_model, get_recommendations, fetch_tmdb_info, fetch_poster_by_tmdb_id, fetch_wikipedia_poster
 
 
 app = Flask(__name__)
@@ -35,6 +35,9 @@ def resolve_database_uri():
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = resolve_database_uri()
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "connect_args": {"timeout": 30}
+}
 
 db = SQLAlchemy(app)
 
@@ -307,12 +310,20 @@ seed_database_from_csv(app)
 def ensure_poster(movie):
     """Fetch poster from TMDB if not cached, and save to DB."""
     if movie.poster_path:
-        return
+        return False
+    
+    poster_url = None
     if movie.tmdb_id:
         poster_url = fetch_poster_by_tmdb_id(movie.tmdb_id)
-        if poster_url:
-            movie.poster_path = poster_url
-            db.session.commit()
+        
+    if not poster_url:
+        # Fallback to Wikipedia search scraping
+        poster_url = fetch_wikipedia_poster(movie.title, movie.year)
+        
+    if poster_url:
+        movie.poster_path = poster_url
+        return True
+    return False
 
 
 # ============================================================
@@ -383,11 +394,18 @@ def logout():
 @app.route("/", methods=["GET"])
 def index():
     search_query = request.args.get("q", "").strip()
+    updated = False
     if search_query:
         movies = Movie.query.filter(Movie.title.ilike(f"%{search_query}%")).order_by(Movie.rating.desc()).limit(20).all()
         # Fetch posters on-demand for search results
         for m in movies:
-            ensure_poster(m)
+            if ensure_poster(m):
+                updated = True
+        if updated:
+            try:
+                db.session.commit()
+            except sqlalchemy.exc.OperationalError:
+                db.session.rollback()
         return render_template(
             "index.html",
             movies=movies,
@@ -395,20 +413,33 @@ def index():
             categorized_movies={}
         )
 
-    # 1. Fetch top 4 highest rated movies as trending list
+    # 1. Fetch data from DB first (avoids autoflush contention)
     trending_movies = Movie.query.order_by(Movie.rating.desc()).limit(4).all()
-    for m in trending_movies:
-        ensure_poster(m)
 
-    # 2. Explore categories — 4 movies per genre
     genres = ["Drama", "Crime", "Thriller", "Action", "Adventure", "Animation", "Family", "Comedy", "Romance"]
     categorized_movies = {}
     for g in genres:
         movies_in_g = Movie.query.filter(Movie.genre.ilike(f"%{g}%")).order_by(Movie.rating.desc()).limit(4).all()
-        for m in movies_in_g:
-            ensure_poster(m)
         if movies_in_g:
             categorized_movies[g] = movies_in_g
+
+    # 2. Update poster paths in memory
+    for m in trending_movies:
+        if ensure_poster(m):
+            updated = True
+
+    for g, movies_in_g in categorized_movies.items():
+        for m in movies_in_g:
+            if ensure_poster(m):
+                updated = True
+
+    # 3. Commit changes once at the end (with safe rollback)
+    if updated:
+        try:
+            db.session.commit()
+        except sqlalchemy.exc.OperationalError:
+            db.session.rollback()
+            print("Database locked during index commit, rolled back safely.")
 
     return render_template(
         "index.html",
@@ -427,9 +458,18 @@ def category(genre):
         page=page, per_page=per_page, error_out=False
     )
     
+    updated = False
     # Fetch posters on-demand for movies listed on the current page
     for m in pagination.items:
-        ensure_poster(m)
+        if ensure_poster(m):
+            updated = True
+            
+    if updated:
+        try:
+            db.session.commit()
+        except sqlalchemy.exc.OperationalError:
+            db.session.rollback()
+            print("Database locked during category commit, rolled back safely.")
             
     return render_template("category.html", genre=genre, pagination=pagination)
 
@@ -443,6 +483,9 @@ def movie_detail(movie_id: int):
         tmdb_data = fetch_tmdb_info(movie.title)
         if tmdb_data.get('poster_path'):
             movie.poster_path = tmdb_data['poster_path']
+        
+        if not movie.poster_path:
+            movie.poster_path = fetch_wikipedia_poster(movie.title, movie.year)
         if tmdb_data.get('overview') and (not movie.plot or movie.plot == "No overview available."):
             movie.plot = tmdb_data['overview']
         
@@ -468,7 +511,11 @@ def movie_detail(movie_id: int):
             movie.vote_count = tmdb_data.get('vote_count')
         if tmdb_data.get('vote_average') and tmdb_data['vote_average'] > 0:
             movie.rating = tmdb_data['vote_average']
-        db.session.commit()
+        try:
+            db.session.commit()
+        except sqlalchemy.exc.OperationalError:
+            db.session.rollback()
+            print("Database locked during movie_detail commit, rolled back safely.")
 
     # ML ENGINE TRIGGER: Query database for top 10 recommended movie titles
     raw_recommendations = get_recommendations(movie.title, movies_df, similarity_matrix, list_of_all_titles, top_n=10)
@@ -611,15 +658,25 @@ def profile():
         session.clear()
         return redirect(url_for("auth"))
     
+    updated = False
     # Get liked movies
     liked_movies = db.session.query(Movie).join(Like).filter(Like.user_id == user.id).order_by(Like.timestamp.desc()).all()
     for m in liked_movies:
-        ensure_poster(m)
+        if ensure_poster(m):
+            updated = True
     
     # Get saved movies
     saved_movies = db.session.query(Movie).join(SavedMovie).filter(SavedMovie.user_id == user.id).order_by(SavedMovie.timestamp.desc()).all()
     for m in saved_movies:
-        ensure_poster(m)
+        if ensure_poster(m):
+            updated = True
+            
+    if updated:
+        try:
+            db.session.commit()
+        except sqlalchemy.exc.OperationalError:
+            db.session.rollback()
+            print("Database locked during profile commit, rolled back safely.")
     
     # Get user reviews
     user_reviews = Review.query.filter_by(user_id=user.id).order_by(Review.timestamp.desc()).all()
