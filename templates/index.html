@@ -51,12 +51,27 @@
                         <li class="nav-item">
                             <a class="nav-link px-3" href="#developers-section" id="nav-developers">Developers</a>
                         </li>
+                        {% if is_admin %}
                         <li class="nav-item">
                             <a class="nav-link px-3" href="{{ url_for('admin') }}" id="nav-admin">Admin</a>
                         </li>
-                        <!-- CTA Register/Login Button inside Navbar -->
+                        {% endif %}
+                        <!-- Auth/Profile Button -->
                         <li class="nav-item ms-lg-2">
+                            {% if is_logged_in %}
+                            <div class="dropdown">
+                                <a class="btn btn-outline-primary px-4 rounded-pill dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="nav-user-menu">
+                                    <i class="bi bi-person-circle me-1"></i>{{ current_user.username }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow">
+                                    <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="bi bi-person me-2"></i>My Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                                </ul>
+                            </div>
+                            {% else %}
                             <a class="btn btn-outline-primary px-4 rounded-pill" href="{{ url_for('auth') }}" id="nav-auth">Login/Register</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
@@ -90,16 +105,7 @@
                     
                     <!-- Right Side Column -->
                     <div class="col-lg-6" id="hero-right-column">
-                        <!-- Placeholder Container for Canvas/Animations/Carousel -->
                         <div class="movie-animation-placeholder bg-secondary-subtle border border-secondary border-dashed rounded-4 p-5 d-flex align-items-center justify-content-center shadow-lg" id="hero-animation-container">
-                            <!-- 
-                              DEVELOPER NOTE:
-                              This area will later contain:
-                              - floating movie posters
-                              - canvas animations
-                              - particle systems
-                              - promotional carousel
-                            -->
                             <div class="text-center py-5">
                                 <i class="bi bi-rocket-takeoff-fill display-2 text-primary mb-3"></i>
                                 <h3 class="h4 text-dark-emphasis fw-bold">Interactive Visualization</h3>
@@ -134,69 +140,10 @@
                             <span class="input-group-text bg-white border-0 ps-3">
                                 <i class="bi bi-search text-muted"></i>
                             </span>
-                            <input type="search" class="form-control border-0 ps-2" name="q" placeholder="Search movies by title, actors, director, or tags..." aria-label="Search movies" id="search-input" value="{{ search_query or '' }}">
+                            <input type="search" class="form-control border-0 ps-2" name="q" placeholder="Search movies by title..." aria-label="Search movies" id="search-input" value="{{ search_query or '' }}">
                             <button class="btn btn-primary px-4 fw-bold" type="submit" id="btn-search">
                                 Search
                             </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Filters Dropdown Row -->
-                    <div class="col-12 col-lg-10 mt-3">
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-2">
-                            <!-- Genre Dropdown -->
-                            <div class="col">
-                                <label for="filter-genre" class="visually-hidden">Genre</label>
-                                <select class="form-select border-secondary-subtle" id="filter-genre">
-                                    <option selected value="">All Genres</option>
-                                    <option value="action">Action</option>
-                                    <option value="comedy">Comedy</option>
-                                    <option value="drama">Drama</option>
-                                    <option value="sci-fi">Sci-Fi</option>
-                                    <option value="horror">Horror</option>
-                                    <option value="romance">Romance</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Year Dropdown -->
-                            <div class="col">
-                                <label for="filter-year" class="visually-hidden">Year</label>
-                                <select class="form-select border-secondary-subtle" id="filter-year">
-                                    <option selected value="">All Years</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2020-2022">2020 - 2022</option>
-                                    <option value="2010s">2010s</option>
-                                    <option value="2000s">2000s</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Language Dropdown -->
-                            <div class="col">
-                                <label for="filter-language" class="visually-hidden">Language</label>
-                                <select class="form-select border-secondary-subtle" id="filter-language">
-                                    <option selected value="">All Languages</option>
-                                    <option value="en">English</option>
-                                    <option value="es">Spanish</option>
-                                    <option value="fr">French</option>
-                                    <option value="hi">Hindi</option>
-                                    <option value="ja">Japanese</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Rating Dropdown -->
-                            <div class="col">
-                                <label for="filter-rating" class="visually-hidden">Rating</label>
-                                <select class="form-select border-secondary-subtle" id="filter-rating">
-                                    <option selected value="">All Ratings</option>
-                                    <option value="9">9.0+ Rating</option>
-                                    <option value="8">8.0+ Rating</option>
-                                    <option value="7">7.0+ Rating</option>
-                                    <option value="6">6.0+ Rating</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                 </form>
@@ -216,22 +163,27 @@
                     </div>
                 </div>
                 
-                <!-- 8 Movie Card Grid -->
+                <!-- Movie Card Grid -->
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="trending-movie-grid">
                     {% if movies %}
                         {% for movie in movies %}
                         <div class="col">
                             <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden">
+                                {% if movie.poster_path %}
+                                <div class="ratio ratio-2x3">
+                                    <img src="{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} Poster" style="object-fit: cover; width: 100%; height: 100%;">
+                                </div>
+                                {% else %}
                                 <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
                                     <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
                                         <i class="bi bi-image-fill display-5 mb-2"></i>
-                                        <span class="small font-monospace">Poster Placeholder</span>
+                                        <span class="small font-monospace">No Poster</span>
                                     </div>
                                 </div>
+                                {% endif %}
                                 <div class="card-body d-flex flex-column">
-                                    <span class="badge bg-danger mb-2 align-self-start">DB Movie</span>
-                                    <h5 class="card-title fw-bold text-dark text-truncate">{{ movie.title }}</h5>
-                                    <p class="card-text text-muted small mb-2">{{ movie.genre }} &bull; {{ movie.year }}</p>
+                                    <h5 class="card-title fw-bold text-dark text-truncate" title="{{ movie.title }}">{{ movie.title }}</h5>
+                                    <p class="card-text text-muted small mb-2">{{ movie.genre|truncate(30) }} &bull; {{ movie.year }}</p>
                                     <div class="mt-auto pt-3 border-top border-light">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <span class="badge bg-warning text-dark px-2 py-1">
@@ -252,239 +204,6 @@
                         <div class="alert alert-info mb-0">No movies are currently available in the database.</div>
                     </div>
                     {% endif %}
-                    <!-- Movie Card 1 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-1">
-                            <!-- Poster Placeholder Container -->
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <!-- Card Content -->
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-danger mb-2 align-self-start">Hot #1</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-1">Movie Poster Placeholder</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-1">Action &bull; Adventure &bull; Sci-Fi</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-1">
-                                            <i class="bi bi-star-fill me-1"></i>8.7
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-1">2026</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-1">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Movie Card 2 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-2">
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-danger mb-2 align-self-start">Hot #2</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-2">Interstellar Sequel</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-2">Sci-Fi &bull; Drama</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-2">
-                                            <i class="bi bi-star-fill me-1"></i>8.9
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-2">2026</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-2">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Movie Card 3 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-3">
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-danger mb-2 align-self-start">Hot #3</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-3">Laughter Unlimited</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-3">Comedy &bull; Romance</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-3">
-                                            <i class="bi bi-star-fill me-1"></i>7.8
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-3">2025</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-3">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Movie Card 4 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-4">
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-4">Night of Terror</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-4">Horror &bull; Thriller</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-4">
-                                            <i class="bi bi-star-fill me-1"></i>7.2
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-4">2025</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-4">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Movie Card 5 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-5">
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-5">Shadows in the Woods</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-5">Mystery &bull; Drama</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-5">
-                                            <i class="bi bi-star-fill me-1"></i>8.1
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-5">2024</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-5">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Movie Card 6 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-6">
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-6">Cybernetic Edge</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-6">Sci-Fi &bull; Action</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-6">
-                                            <i class="bi bi-star-fill me-1"></i>8.4
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-6">2026</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-6">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Movie Card 7 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-7">
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-7">The Historical Epoch</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-7">History &bull; Drama</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-7">
-                                            <i class="bi bi-star-fill me-1"></i>8.0
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-7">2023</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-7">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Movie Card 8 -->
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-8">
-                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
-                                    <i class="bi bi-image-fill display-5 mb-2"></i>
-                                    <span class="small font-monospace">Poster Placeholder</span>
-                                </div>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
-                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-8">Love in Paris</h5>
-                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-8">Romance &bull; Drama</p>
-                                
-                                <div class="mt-auto pt-3 border-top border-light">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-8">
-                                            <i class="bi bi-star-fill me-1"></i>7.6
-                                        </span>
-                                        <span class="text-muted small movie-year" id="trending-year-8">2024</span>
-                                    </div>
-                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-8">
-                                        <i class="bi bi-info-circle me-1"></i>View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -497,273 +216,54 @@
                     <p class="text-muted">Curated and structured categories to fit your mood</p>
                 </div>
 
-                <!-- 1. Popular Movies Category -->
-                <div class="category-group mb-5" id="category-popular">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Popular Movies</h3>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                        <!-- 4 Placeholder Cards -->
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Popular Movie A</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                {% for category, cat_movies in categorized_movies.items() %}
+                <!-- Category Block: {{ category }} -->
+                <div class="category-group mb-5" id="category-{{ category | replace(' ', '-') | replace('&', '') }}">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="h4 fw-bold text-dark border-start border-primary border-4 ps-2 mb-0">{{ category }}</h3>
+                        <a href="{{ url_for('category', genre=category) }}" class="btn btn-sm btn-outline-primary rounded-pill animate-hover">
+                            View More <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 movie-row" id="row-{{ category | replace(' ', '-') | replace('&', '') }}">
+                        {% for movie in cat_movies %}
+                        <div class="col movie-card-col">
+                            <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden">
+                                {% if movie.poster_path %}
+                                <div class="ratio ratio-2x3">
+                                    <img src="{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} Poster" style="object-fit: cover; width: 100%; height: 100%;">
+                                </div>
+                                {% else %}
+                                <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                    <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                        <i class="bi bi-image-fill display-5 mb-2"></i>
+                                        <span class="small font-monospace">No Poster</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="card-body d-flex flex-column p-3">
+                                    <h6 class="card-title fw-bold text-dark text-truncate mb-1" title="{{ movie.title }}">{{ movie.title }}</h6>
+                                    <p class="card-text text-muted small mb-2">{{ movie.year }} &bull; {{ category }}</p>
+                                    <div class="mt-auto pt-2 border-top border-light d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-warning text-dark px-2 py-1">
+                                            <i class="bi bi-star-fill me-1"></i>{{ movie.rating }}
+                                        </span>
+                                        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-sm btn-primary rounded-2">
+                                            View Details
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Popular Movie B</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Popular Movie C</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Popular Movie D</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-
-                <!-- 2. Highest Rated Category -->
-                <div class="category-group mb-5" id="category-highest-rated">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Highest Rated</h3>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                        <!-- 4 Placeholder Cards -->
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film X</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film Y</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film Z</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film W</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. Recently Released Category -->
-                <div class="category-group mb-5" id="category-recent">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Recently Released</h3>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                        <!-- 4 Placeholder Cards -->
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">New Release A</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">New Release B</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">New Release C</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">New Release D</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. Action Category -->
-                <div class="category-group mb-5" id="category-action">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Action</h3>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                        <!-- 4 Placeholder Cards -->
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Action Flick 1</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Action Flick 2</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Action Flick 3</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Action Flick 4</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. Comedy Category -->
-                <div class="category-group mb-5" id="category-comedy">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Comedy</h3>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                        <!-- 4 Placeholder Cards -->
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 1</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 2</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 3</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 4</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6. Drama Category -->
-                <div class="category-group" id="category-drama">
-                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Drama</h3>
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-                        <!-- 4 Placeholder Cards -->
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 1</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 2</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 3</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 4</h6>
-                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </section>
-
-        <!-- F. ABOUT CINEMA SCALE SECTION -->
+        
+        
         <section class="about-section py-5 bg-light" id="about-section">
             <div class="container py-3">
                 <div class="row align-items-center g-5">
@@ -779,7 +279,6 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="row g-4">
-                            <!-- Detail List Grid -->
                             <div class="col-12">
                                 <div class="d-flex align-items-start">
                                     <div class="bg-primary text-white rounded-circle p-2 me-3">
@@ -850,7 +349,6 @@
                 </div>
                 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="features-grid">
-                    <!-- Feature 1 -->
                     <div class="col">
                         <div class="card h-100 border-0 bg-light p-4 shadow-sm">
                             <div class="text-primary mb-3">
@@ -860,7 +358,6 @@
                             <p class="text-muted mb-0 small">Get bespoke movie suggestions dynamically tailored to match your specific streaming tastes and review records.</p>
                         </div>
                     </div>
-                    <!-- Feature 2 -->
                     <div class="col">
                         <div class="card h-100 border-0 bg-light p-4 shadow-sm">
                             <div class="text-primary mb-3">
@@ -870,7 +367,6 @@
                             <p class="text-muted mb-0 small">Analyze visual, demographic, and statistical trends across millions of ratings to understand performance ratings.</p>
                         </div>
                     </div>
-                    <!-- Feature 3 -->
                     <div class="col">
                         <div class="card h-100 border-0 bg-light p-4 shadow-sm">
                             <div class="text-primary mb-3">
@@ -880,7 +376,6 @@
                             <p class="text-muted mb-0 small">Leverage low-latency searching architecture to query multi-criteria categories instantly without loading delays.</p>
                         </div>
                     </div>
-                    <!-- Feature 4 -->
                     <div class="col">
                         <div class="card h-100 border-0 bg-light p-4 shadow-sm">
                             <div class="text-primary mb-3">
@@ -890,17 +385,15 @@
                             <p class="text-muted mb-0 small">Empower administrators to curate catalogs, audit customer records, and review feedback reports systematically.</p>
                         </div>
                     </div>
-                    <!-- Feature 5 -->
                     <div class="col">
                         <div class="card h-100 border-0 bg-light p-4 shadow-sm">
                             <div class="text-primary mb-3">
-                                <i class="bi bi-graph-up-arrow display-5"></i>
+                                <i class="bi bi-heart display-5"></i>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Interactive Charts</h4>
-                            <p class="text-muted mb-0 small">Generate graphical timelines representing movie statistics, scoring breakdowns, and audience growth charts dynamically.</p>
+                            <h4 class="fw-bold text-dark mb-2">Like & Save Movies</h4>
+                            <p class="text-muted mb-0 small">Build your personal watchlist by liking and saving movies. Your profile keeps track of all your favorites.</p>
                         </div>
                     </div>
-                    <!-- Feature 6 -->
                     <div class="col">
                         <div class="card h-100 border-0 bg-light p-4 shadow-sm">
                             <div class="text-primary mb-3">
@@ -926,7 +419,6 @@
                     <!-- Developer 1: Nikhil -->
                     <div class="col">
                         <div class="card h-100 border-0 shadow-sm text-center p-3 developer-card" id="dev-card-nikhil">
-                            <!-- Circular SVG Avatar Placeholder -->
                             <svg class="bd-placeholder-img rounded-circle mx-auto mb-3" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nikhil's Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
                                 <title>Avatar Placeholder</title>
                                 <rect width="100%" height="100%" fill="#6c757d"/>
@@ -934,7 +426,6 @@
                             </svg>
                             <h5 class="fw-bold text-dark mb-1">Nikhil</h5>
                             <p class="text-primary small mb-3">Lead System Architect</p>
-                            <!-- Social Icon Placeholders -->
                             <div class="d-flex justify-content-center gap-2 mt-auto">
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Nikhil's Github"><i class="bi bi-github"></i></a>
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Nikhil's LinkedIn"><i class="bi bi-linkedin"></i></a>
@@ -1019,27 +510,22 @@
     <footer class="bg-dark text-light py-5 mt-auto border-top border-secondary" id="footer-section">
         <div class="container">
             <div class="row g-4 mb-4">
-                <!-- Col 1: Brand Info -->
                 <div class="col-lg-4 col-md-6" id="footer-brand-col">
                     <h5 class="fw-bold text-white mb-3"><i class="bi bi-film me-2 text-primary"></i>Cinema Scale</h5>
                     <p class="text-secondary small">
                         Cinema Scale provides analytical film suggestions and custom indexing vectors to curate the ultimate watching logs. Explore movies, analyze metrics, and discover reviews.
                     </p>
                 </div>
-                
-                <!-- Col 2: Quick Links -->
                 <div class="col-lg-2 col-md-6" id="footer-links-col">
                     <h5 class="fw-bold text-white mb-3">Quick Links</h5>
                     <ul class="list-unstyled text-secondary small">
-                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none hover-link">Home</a></li>
-                        <li class="mb-2"><a href="#search-section" class="text-secondary text-decoration-none hover-link">Movies</a></li>
-                        <li class="mb-2"><a href="#recommendations-categories" class="text-secondary text-decoration-none hover-link">Recommendations</a></li>
-                        <li class="mb-2"><a href="#about-section" class="text-secondary text-decoration-none hover-link">About Us</a></li>
-                        <li class="mb-2"><a href="#developers-section" class="text-secondary text-decoration-none hover-link">Developers</a></li>
+                        <li class="mb-2"><a href="{{ url_for('index') }}" class="text-secondary text-decoration-none hover-link">Home</a></li>
+                        <li class="mb-2"><a href="{{ url_for('index') }}#search-section" class="text-secondary text-decoration-none hover-link">Movies</a></li>
+                        <li class="mb-2"><a href="{{ url_for('index') }}#recommendations-categories" class="text-secondary text-decoration-none hover-link">Recommendations</a></li>
+                        <li class="mb-2"><a href="{{ url_for('index') }}#about-section" class="text-secondary text-decoration-none hover-link">About Us</a></li>
+                        <li class="mb-2"><a href="{{ url_for('index') }}#developers-section" class="text-secondary text-decoration-none hover-link">Developers</a></li>
                     </ul>
                 </div>
-                
-                <!-- Col 3: Contact Info -->
                 <div class="col-lg-3 col-md-6" id="footer-contact-col">
                     <h5 class="fw-bold text-white mb-3">Contact Support</h5>
                     <ul class="list-unstyled text-secondary small">
@@ -1048,8 +534,6 @@
                         <li class="mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>University Tech Park, Suite 405</li>
                     </ul>
                 </div>
-                
-                <!-- Col 4: Social Icons -->
                 <div class="col-lg-3 col-md-6" id="footer-social-col">
                     <h5 class="fw-bold text-white mb-3">Follow Cinema Scale</h5>
                     <p class="text-secondary small mb-3">Stay updated with the latest releases and developer updates.</p>
@@ -1062,7 +546,6 @@
                 </div>
             </div>
             
-            <!-- Bottom Copyright -->
             <div class="border-top border-secondary pt-4 mt-4 text-center">
                 <p class="text-secondary small mb-0" id="footer-copyright">
                     &copy; 2026 Cinema Scale. All Rights Reserved. Built with <i class="bi bi-heart-fill text-danger mx-1"></i> by Nikhil, Satkar, Diya, Deepika, and Kritika.
@@ -1075,6 +558,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <!-- Local Javascript File -->
-    <script src="static/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

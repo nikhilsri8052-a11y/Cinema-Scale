@@ -595,3 +595,118 @@ body.light-theme #auth-main::after {
 .ratio-16x9 {
     --bs-aspect-ratio: 56.25%;
 }
+
+/* ==========================================
+   10. Profile Page (profile.html)
+   ========================================== */
+
+#profile-header {
+    background: linear-gradient(135deg, var(--bg-card), rgba(var(--accent-purple-rgb), 0.15)) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+#liked-movies-section .movie-card:hover,
+#saved-movies-section .movie-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ==========================================
+   11. Like/Save Button Active States
+   ========================================== */
+
+#btn-like.btn-danger {
+    animation: likePopIn 0.3s ease;
+}
+
+@keyframes likePopIn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+#btn-watchlist.btn-warning {
+    color: #0d0e15 !important;
+    font-weight: 700;
+}
+
+/* ==========================================
+   12. Review Cards
+   ========================================== */
+
+.review-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.review-card:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-purple-glow);
+}
+
+/* ==========================================
+   13. Pagination Styles
+   ========================================== */
+
+.pagination .page-link {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+.pagination .page-item.active .page-link {
+    background: var(--accent-gradient) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+.pagination .page-link:hover {
+    background-color: var(--bg-card-hover);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+/* ==========================================
+   14. Dropdown Menu Theme Adaptation
+   ========================================== */
+
+.dropdown-menu {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+}
+.dropdown-item {
+    color: var(--text-primary) !important;
+    transition: all 0.15s ease;
+}
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--bg-card-hover) !important;
+    color: var(--accent-gold) !important;
+}
+.dropdown-divider {
+    border-color: var(--border-color) !important;
+}
+
+/* ==========================================
+   15. Developer Cards
+   ========================================== */
+
+.developer-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.developer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-purple-glow);
+}
+
+/* ==========================================
+   16. Breadcrumb Theme
+   ========================================== */
+
+.breadcrumb {
+    background-color: transparent !important;
+}
+.breadcrumb-item a {
+    color: var(--accent-purple);
+    text-decoration: none;
+}
+.breadcrumb-item.active {
+    color: var(--text-secondary);
+}
