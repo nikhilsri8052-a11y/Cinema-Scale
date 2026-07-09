@@ -1,0 +1,597 @@
+/* 
+   Cinema Scale - Global Custom Stylesheet
+   Expert UI/UX styling for Movie Recommendation Web App
+   Supports Dark (Default) & Light themes, micro-animations, and glassmorphism.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================
+   1. Theme Configuration & Custom Properties
+   ========================================== */
+
+:root {
+    /* Dark Mode (Default) */
+    --bg-main: #0d0e15;
+    --bg-card: #151824;
+    --bg-card-hover: #1c2030;
+    --text-primary: #ffffff;
+    --text-secondary: #8e95b3;
+    
+    --accent-gold: #ffcc00;
+    --accent-purple: #8a2be2;
+    --accent-purple-rgb: 138, 43, 226;
+    --accent-gold-rgb: 255, 204, 0;
+    
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 204, 0, 0.3);
+    --input-bg: #1c2030;
+    
+    --accent-gradient: linear-gradient(135deg, #8a2be2 0%, #ff007f 100%);
+    --accent-gradient-hover: linear-gradient(135deg, #a04ef6 0%, #ff409f 100%);
+    --gold-gradient: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
+    
+    --glass-bg: rgba(21, 24, 36, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    
+    --shadow-glow: 0 0 15px rgba(255, 204, 0, 0.25);
+    --shadow-purple-glow: 0 0 20px rgba(138, 43, 226, 0.25);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
+    
+    --font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+}
+
+body.light-theme {
+    /* Light Mode */
+    --bg-main: #f7f9fc;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    
+    --accent-gold: #ff6b6b; /* Coral pink is used for primary brand accents in light mode */
+    --accent-purple: #00b4d8; /* Tropical Teal as primary action */
+    --accent-purple-rgb: 0, 180, 216;
+    --accent-gold-rgb: 255, 107, 107;
+    
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-hover: rgba(0, 180, 216, 0.3);
+    --input-bg: #ffffff;
+    
+    --accent-gradient: linear-gradient(135deg, #00b4d8 0%, #ff6b6b 100%);
+    --accent-gradient-hover: linear-gradient(135deg, #00d2ff 0%, #ff8585 100%);
+    --gold-gradient: linear-gradient(135deg, #ffd166 0%, #ff9f43 100%);
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    
+    --shadow-glow: 0 0 15px rgba(0, 180, 216, 0.15);
+    --shadow-purple-glow: 0 0 20px rgba(255, 107, 107, 0.15);
+    --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* ==========================================
+   2. Reset & Global Styles
+   ========================================== */
+
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.15s ease;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-main) !important;
+    color: var(--text-primary) !important;
+    overflow-x: hidden;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--bg-card-hover);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
+
+/* ==========================================
+   3. Bootstrap Override Adaptations
+   ========================================== */
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary) !important;
+    font-weight: 700;
+}
+
+.text-muted, .text-secondary, .text-secondary-emphasis {
+    color: var(--text-secondary) !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--accent-gradient) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(var(--accent-purple-rgb), 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover {
+    background: var(--accent-gradient-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--accent-purple-rgb), 0.5), 0 0 10px rgba(var(--accent-purple-rgb), 0.2);
+}
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-outline-primary {
+    border-color: var(--accent-gold) !important;
+    color: var(--accent-gold) !important;
+    background-color: transparent !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.btn-outline-primary:hover {
+    background: var(--gold-gradient) !important;
+    border-color: transparent !important;
+    color: #0d0e15 !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-outline-light {
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+.btn-outline-light:hover {
+    background-color: var(--bg-card-hover) !important;
+    color: var(--accent-gold) !important;
+    border-color: var(--accent-gold) !important;
+}
+
+/* Cards global styling */
+.card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
+}
+
+/* Form Inputs */
+.form-control, .form-select {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent-purple) !important;
+    box-shadow: 0 0 0 3px rgba(var(--accent-purple-rgb), 0.25) !important;
+    outline: none;
+}
+.form-control::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* Floating labels theme adjust */
+.form-floating > label {
+    color: var(--text-secondary);
+}
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--accent-purple);
+}
+
+/* Header & Navbar Adaptation */
+header .navbar {
+    background-color: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+header .nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+}
+header .nav-link:hover, header .nav-link.active {
+    color: var(--accent-gold) !important;
+}
+
+/* Footer Adaptation */
+footer {
+    background-color: var(--bg-main) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+/* ==========================================
+   4. Theme Switcher Trigger (Floating Button)
+   ========================================== */
+
+.theme-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    z-index: 1050;
+    background: var(--accent-gradient) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), var(--shadow-purple-glow);
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.theme-toggle:hover {
+    transform: rotate(360deg) scale(1.15);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(var(--accent-purple-rgb), 0.6);
+}
+.theme-toggle i {
+    transition: transform 0.3s ease;
+}
+
+/* ==========================================
+   5. Home Page Details (index.html)
+   ========================================== */
+
+/* Hero Section */
+.hero-section {
+    background-color: var(--bg-main) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Movie Animation Placeholder styling */
+.movie-animation-placeholder {
+    position: relative;
+    border: none !important;
+    background: linear-gradient(135deg, rgba(13, 14, 21, 0.95), rgba(21, 24, 36, 0.95)) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), var(--shadow-purple-glow);
+    overflow: hidden;
+}
+.movie-animation-placeholder::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 180deg,
+        transparent 0%,
+        var(--accent-purple) 25%,
+        transparent 50%,
+        var(--accent-gold) 75%,
+        transparent 100%
+    );
+    animation: rotateGlow 8s linear infinite;
+    z-index: 1;
+    opacity: 0.4;
+}
+.movie-animation-placeholder::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    background: var(--bg-card) !important;
+    border-radius: 12px;
+    z-index: 2;
+}
+.movie-animation-placeholder > * {
+    position: relative;
+    z-index: 3;
+}
+.movie-animation-placeholder i.display-2 {
+    color: var(--accent-gold) !important;
+    text-shadow: var(--shadow-glow);
+    animation: pulseIcon 2s infinite ease-in-out;
+}
+
+@keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(var(--accent-gold-rgb), 0.3)); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 15px rgba(var(--accent-gold-rgb), 0.7)); }
+}
+
+/* Movie Card Zoom & Glowing Border on Hover */
+.movie-card, .trending-movies .card, .category-group .card {
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease;
+    border: 1px solid var(--border-color) !important;
+}
+.movie-card:hover, .trending-movies .card:hover, .category-group .card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: var(--accent-gold) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45), var(--shadow-glow);
+}
+
+/* Search Bar customization */
+.search-section {
+    background-color: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+.search-section .input-group {
+    border: 1px solid var(--border-color) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 50px !important;
+}
+.search-section .input-group:focus-within {
+    border-color: var(--accent-gold) !important;
+    box-shadow: var(--shadow-glow) !important;
+}
+.search-section .input-group-text {
+    background-color: var(--input-bg) !important;
+    border: none !important;
+    padding-left: 20px;
+}
+.search-section #search-input {
+    border: none !important;
+    background-color: var(--input-bg) !important;
+    padding-left: 10px;
+}
+.search-section #btn-search {
+    border-radius: 0 50px 50px 0 !important;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* ==========================================
+   6. Movie Profile Page (movie_info.html)
+   ========================================== */
+
+/* Typography and Layout Details */
+.movie-details-heading {
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+/* Sleek Container for Canvas */
+#canvas-container {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Recommendations Grid Cards spacing and layout */
+.recommendations-categories .card .ratio,
+#analytics-chart-col .ratio,
+#canvas-container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ==========================================
+   7. Authentication Page (auth.html)
+   ========================================== */
+
+/* Blurred Background Blobs for Glassmorphism Context */
+#auth-main {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-main) !important;
+}
+#auth-main::before,
+#auth-main::after {
+    content: '';
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.45;
+    animation: floatBlob 15s infinite alternate ease-in-out;
+}
+#auth-main::before {
+    background: #8a2be2;
+    top: 5%;
+    left: 10%;
+}
+#auth-main::after {
+    background: #ff007f;
+    bottom: 5%;
+    right: 10%;
+    animation-delay: -7.5s;
+}
+
+body.light-theme #auth-main::before {
+    background: #00b4d8;
+    opacity: 0.25;
+}
+body.light-theme #auth-main::after {
+    background: #ff6b6b;
+    opacity: 0.25;
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(80px, 60px) scale(1.25); }
+}
+
+/* Glassmorphism Card styling */
+#auth-card {
+    position: relative;
+    z-index: 5;
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* Auth forms specific visual refinement */
+#auth-card-header .fs-1 i {
+    color: var(--accent-gold) !important;
+    filter: drop-shadow(var(--shadow-glow));
+}
+
+#authTab {
+    background-color: rgba(var(--accent-purple-rgb), 0.08) !important;
+    border: 1px solid var(--border-color);
+}
+#authTab .nav-link {
+    color: var(--text-secondary);
+    transition: all 0.25s ease;
+}
+#authTab .nav-link.active {
+    background: var(--accent-gradient) !important;
+    color: #ffffff !important;
+    box-shadow: var(--shadow-purple-glow);
+}
+
+/* ==========================================
+   8. Admin Page (admin.html)
+   ========================================== */
+
+/* Metrics Dashboard Cards Styling */
+#dashboard-stats-section .card {
+    border-radius: 14px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+#dashboard-stats-section .card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-purple-glow);
+}
+#dashboard-stats-section .bg-primary-subtle {
+    background-color: rgba(138, 43, 226, 0.15) !important;
+    color: #a04ef6 !important;
+}
+#dashboard-stats-section .bg-success-subtle {
+    background-color: rgba(25, 135, 84, 0.15) !important;
+    color: #2fb344 !important;
+}
+#dashboard-stats-section .bg-info-subtle {
+    background-color: rgba(0, 180, 216, 0.15) !important;
+    color: #00b4d8 !important;
+}
+#dashboard-stats-section .bg-warning-subtle {
+    background-color: rgba(255, 204, 0, 0.15) !important;
+    color: #ffd166 !important;
+}
+
+/* High contrast beautifully padded Tables */
+#movie-management-table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    background-color: transparent !important;
+}
+#movie-management-table thead {
+    background: var(--accent-gradient) !important;
+}
+#movie-management-table thead th {
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 16px 12px;
+}
+#movie-management-table thead th:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+#movie-management-table thead th:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+#movie-management-table tbody tr {
+    background-color: var(--bg-card) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+#movie-management-table tbody td {
+    padding: 16px 12px;
+    border-top: 1px solid var(--border-color) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--text-primary);
+}
+#movie-management-table tbody td:first-child {
+    border-left: 1px solid var(--border-color) !important;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+#movie-management-table tbody td:last-child {
+    border-right: 1px solid var(--border-color) !important;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+#movie-management-table tbody tr:hover {
+    background-color: var(--bg-card-hover) !important;
+    transform: scale(1.005);
+    box-shadow: var(--shadow-glow);
+}
+#movie-management-table tbody tr:hover td {
+    border-color: var(--border-hover) !important;
+}
+
+/* Sidebar Menu Admin Custom styles */
+#sidebarMenu {
+    background-color: var(--bg-card) !important;
+    border-right: 1px solid var(--border-color);
+}
+#sidebarMenu .nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+#sidebarMenu .nav-link:hover,
+#sidebarMenu .nav-link.active {
+    color: var(--accent-gold) !important;
+    background-color: rgba(var(--accent-gold-rgb), 0.08) !important;
+    border-left: 3px solid var(--accent-gold);
+}
+
+/* Recent activities table adaptation */
+#recent-activity-section .list-group-item {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+#recent-activity-section .list-group-item:hover {
+    background-color: var(--bg-card-hover) !important;
+}
+
+/* ==========================================
+   9. Miscellaneous & Animation Tweaks
+   ========================================== */
+
+/* Badge Styling */
+.badge.bg-primary-subtle {
+    background-color: rgba(var(--accent-purple-rgb), 0.12) !important;
+    color: var(--accent-purple) !important;
+    border: 1px solid rgba(var(--accent-purple-rgb), 0.25);
+}
+.badge.bg-warning {
+    background: var(--gold-gradient) !important;
+    color: #0d0e15 !important;
+}
+
+.ratio-2x3 {
+    --bs-aspect-ratio: 150%;
+}
+.ratio-21x9 {
+    --bs-aspect-ratio: 42.85%;
+}
+.ratio-16x9 {
+    --bs-aspect-ratio: 56.25%;
+}
