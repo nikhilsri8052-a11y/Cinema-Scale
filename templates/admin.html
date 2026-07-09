@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Scale - Admin Dashboard</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Administration panel for Cinema Scale to manage movies, view user analytics, and audit system logs.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- TOP HEADER / ADMINISTRATIVE NAVIGATION -->
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-4 fw-bold" href="index.html" id="admin-logo">
+            <i class="bi bi-film text-primary me-2"></i>Cinema Scale
+        </a>
+        
+        <!-- Toggle button for sidebar collapse on small screens -->
+        <button class="navbar-toggler position-absolute d-md-none collapsed start-100 translate-middle-x mt-1 me-3 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Top Search Box placeholder -->
+        <div class="w-100" id="header-search-container">
+            <input class="form-control form-control-dark w-100 rounded-0 border-0 bg-secondary-subtle px-3 py-2" type="text" placeholder="Search system database, users, logs..." aria-label="Search" id="admin-search-input">
+        </div>
+        
+        <!-- Profile and Notification icons dropdown -->
+        <div class="navbar-nav flex-row align-items-center px-3 gap-3" id="admin-header-actions">
+            <!-- Notifications Icon Placeholder -->
+            <div class="nav-item position-relative" id="notifications-placeholder">
+                <a href="#" class="nav-link text-white fs-5" aria-label="View notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="position-absolute top-25 start-75 translate-middle p-1 bg-danger border border-light rounded-circle">
+                        <span class="visually-hidden">New alerts</span>
+                    </span>
+                </a>
+            </div>
+            
+            <!-- User Profile Avatar/Dropdown Placeholder -->
+            <div class="nav-item dropdown" id="profile-placeholder">
+                <a class="nav-link dropdown-toggle text-white d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg class="bd-placeholder-img rounded-circle" width="30" height="30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profile Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#0d6efd"/>
+                        <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle" font-size="12" font-weight="bold">AD</text>
+                    </svg>
+                    <span class="d-none d-md-inline small">Admin Panel</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>My Profile</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="auth.html"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- DASHBOARD LAYOUT GRID CONTAINER -->
+    <div class="container-fluid flex-grow-1 d-flex flex-column">
+        <div class="row flex-grow-1">
+            
+            <!-- SIDEBAR NAVIGATION MENU -->
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse text-light py-3 border-end border-secondary">
+                <div class="position-sticky pt-2">
+                    <ul class="nav flex-column gap-2" id="sidebar-links">
+                        <li class="nav-item">
+                            <a class="nav-link active text-white bg-primary rounded-2 py-2 px-3 d-flex align-items-center gap-2" aria-current="page" href="#" id="sidebar-dashboard">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#movie-management-section" id="sidebar-movies">
+                                <i class="bi bi-film"></i> Manage Movies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#" id="sidebar-users">
+                                <i class="bi bi-people"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#" id="sidebar-recommendations">
+                                <i class="bi bi-stars"></i> Recommendations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#admin-analytics-section" id="sidebar-analytics">
+                                <i class="bi bi-graph-up-arrow"></i> Analytics
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#" id="sidebar-settings">
+                                <i class="bi bi-gear"></i> Settings
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4 border-top border-secondary pt-3">
+                            <a class="nav-link text-danger rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="auth.html" id="sidebar-logout">
+                                <i class="bi bi-box-arrow-left"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4" id="admin-main-content">
+                
+                <!-- Section Header -->
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom" id="dashboard-title-row">
+                    <h1 class="h2 fw-bold text-dark" id="admin-dashboard-title">Admin Control Panel</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0" id="admin-dashboard-toolbar">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-share me-1"></i>Share</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i>Export</button>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1">
+                            <i class="bi bi-plus-circle"></i> Add New Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STATISTICS CARDS ROW -->
+                <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4" id="dashboard-stats-section">
+                    <!-- Stat Card 1 -->
+                    <div class="col">
+                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h6 class="text-muted small uppercase mb-1">Total Registered Users</h6>
+                                    <span class="fs-3 fw-bold text-dark" id="stat-registered-users">15,234</span>
+                                </div>
+                                <span class="bg-primary-subtle text-primary rounded p-3"><i class="bi bi-people-fill fs-4"></i></span>
+                            </div>
+                            <div class="small text-success mt-2"><i class="bi bi-arrow-up-right me-1"></i>+12% this month</div>
+                        </div>
+                    </div>
+                    <!-- Stat Card 2 -->
+                    <div class="col">
+                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h6 class="text-muted small uppercase mb-1">Total Movies Indexed</h6>
+                                    <span class="fs-3 fw-bold text-dark" id="stat-total-movies">1,420</span>
+                                </div>
+                                <span class="bg-success-subtle text-success rounded p-3"><i class="bi bi-film fs-4"></i></span>
+                            </div>
+                            <div class="small text-muted mt-2"><i class="bi bi-plus-circle me-1"></i>12 added today</div>
+                        </div>
+                    </div>
+                    <!-- Stat Card 3 -->
+                    <div class="col">
+                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h6 class="text-muted small uppercase mb-1">Recommendations Generated</h6>
+                                    <span class="fs-3 fw-bold text-dark" id="stat-recommendations-count">84,392</span>
+                                </div>
+                                <span class="bg-info-subtle text-info rounded p-3"><i class="bi bi-cpu-fill fs-4"></i></span>
+                            </div>
+                            <div class="small text-success mt-2"><i class="bi bi-lightning-charge me-1"></i>High latency optimized</div>
+                        </div>
+                    </div>
+                    <!-- Stat Card 4 -->
+                    <div class="col">
+                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h6 class="text-muted small uppercase mb-1">Active Users Now</h6>
+                                    <span class="fs-3 fw-bold text-dark" id="stat-active-users">4,112</span>
+                                </div>
+                                <span class="bg-warning-subtle text-warning rounded p-3"><i class="bi bi-circle-fill text-warning fs-4"></i></span>
+                            </div>
+                            <div class="small text-success mt-2"><i class="bi bi-wifi me-1"></i>Realtime sync active</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MOVIE MANAGEMENT SECTION (TABLE & ADD MOVIE FORM) -->
+                <section class="row g-4 mb-4" id="movie-management-section">
+                    <!-- Left: Movie Table Card -->
+                    <div class="col-xl-8" id="movie-table-card-col">
+                        <div class="card border-0 shadow-sm p-4 h-100 bg-white rounded-3">
+                            <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-table me-2 text-primary"></i>Movie Database Management</h3>
+                            
+                            <!-- Responsive Table wrapper -->
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="movie-management-table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" class="small text-muted fw-bold">Poster</th>
+                                            <th scope="col" class="small text-muted fw-bold">Movie Title</th>
+                                            <th scope="col" class="small text-muted fw-bold">Genre</th>
+                                            <th scope="col" class="small text-muted fw-bold text-center">Year</th>
+                                            <th scope="col" class="small text-muted fw-bold text-center">Rating</th>
+                                            <th scope="col" class="small text-muted fw-bold text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Placeholder Row 1 -->
+                                        <tr>
+                                            <td>
+                                                <svg class="bd-placeholder-img rounded shadow-sm" width="40" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poster thumbnail" preserveAspectRatio="xMidYMid slice">
+                                                    <rect width="100%" height="100%" fill="#6c757d"/>
+                                                    <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle" font-size="8">Poster</text>
+                                                </svg>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold d-block text-dark text-truncate">Space Continuum</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">Sci-Fi</span>
+                                            </td>
+                                            <td class="text-center">2026</td>
+                                            <td class="text-center"><span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>8.7</span></td>
+                                            <td class="text-end">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary" aria-label="Edit Movie Space Continuum"><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Delete Movie Space Continuum"><i class="bi bi-trash"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!-- Placeholder Row 2 -->
+                                        <tr>
+                                            <td>
+                                                <svg class="bd-placeholder-img rounded shadow-sm" width="40" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poster thumbnail" preserveAspectRatio="xMidYMid slice">
+                                                    <rect width="100%" height="100%" fill="#6c757d"/>
+                                                    <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle" font-size="8">Poster</text>
+                                                </svg>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold d-block text-dark text-truncate">Midnight Tales</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">Drama</span>
+                                            </td>
+                                            <td class="text-center">2025</td>
+                                            <td class="text-center"><span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>7.8</span></td>
+                                            <td class="text-end">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary" aria-label="Edit Movie Midnight Tales"><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Delete Movie Midnight Tales"><i class="bi bi-trash"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!-- Placeholder Row 3 -->
+                                        <tr>
+                                            <td>
+                                                <svg class="bd-placeholder-img rounded shadow-sm" width="40" height="60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poster thumbnail" preserveAspectRatio="xMidYMid slice">
+                                                    <rect width="100%" height="100%" fill="#6c757d"/>
+                                                    <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle" font-size="8">Poster</text>
+                                                </svg>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold d-block text-dark text-truncate">Laugh and Run</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">Comedy</span>
+                                            </td>
+                                            <td class="text-center">2024</td>
+                                            <td class="text-center"><span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>8.1</span></td>
+                                            <td class="text-end">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary" aria-label="Edit Movie Laugh and Run"><i class="bi bi-pencil"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Delete Movie Laugh and Run"><i class="bi bi-trash"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Add Movie Form Card -->
+                    <div class="col-xl-4" id="add-movie-form-col">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+                            <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-plus-square me-2 text-primary"></i>Add New Movie</h3>
+                            
+                            <form id="add-movie-form">
+                                <!-- Movie Title -->
+                                <div class="mb-2">
+                                    <label for="add-title" class="form-label small text-muted mb-1">Movie Title</label>
+                                    <input type="text" class="form-control form-control-sm" id="add-title" placeholder="Enter title" required>
+                                </div>
+                                
+                                <!-- Genre Selection -->
+                                <div class="mb-2">
+                                    <label for="add-genre" class="form-label small text-muted mb-1">Genre</label>
+                                    <select class="form-select form-select-sm" id="add-genre" required>
+                                        <option value="" selected disabled>Select primary genre</option>
+                                        <option value="action">Action</option>
+                                        <option value="comedy">Comedy</option>
+                                        <option value="drama">Drama</option>
+                                        <option value="sci-fi">Sci-Fi</option>
+                                        <option value="horror">Horror</option>
+                                    </select>
+                                </div>
+
+                                <!-- Language -->
+                                <div class="mb-2">
+                                    <label for="add-language" class="form-label small text-muted mb-1">Language</label>
+                                    <input type="text" class="form-control form-control-sm" id="add-language" placeholder="English, French, Hindi..." required>
+                                </div>
+
+                                <!-- Release Year, Duration & IMDb Rating inline grouping -->
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <label for="add-year" class="form-label small text-muted mb-1">Release Year</label>
+                                        <input type="number" class="form-control form-control-sm" id="add-year" placeholder="2026" min="1800" max="2050" required>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="add-duration" class="form-label small text-muted mb-1">Duration (Min)</label>
+                                        <input type="number" class="form-control form-control-sm" id="add-duration" placeholder="120" min="1" required>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="add-rating" class="form-label small text-muted mb-1">IMDb Rating</label>
+                                        <input type="number" class="form-control form-control-sm" id="add-rating" placeholder="8.5" step="0.1" min="0" max="10" required>
+                                    </div>
+                                </div>
+
+                                <!-- Description Synopsis -->
+                                <div class="mb-2">
+                                    <label for="add-description" class="form-label small text-muted mb-1">Movie Synopsis</label>
+                                    <textarea class="form-control form-control-sm" id="add-description" rows="3" placeholder="Enter movie description synopsis..." required></textarea>
+                                </div>
+
+                                <!-- File Poster Upload Placeholder -->
+                                <div class="mb-3">
+                                    <label for="add-poster" class="form-label small text-muted mb-1">Upload Poster Image</label>
+                                    <input class="form-control form-control-sm" type="file" id="add-poster" aria-describedby="poster-help">
+                                    <div id="poster-help" class="form-text small-text text-muted">Dimensions: 2:3 ratio recommended. Max 2MB.</div>
+                                </div>
+
+                                <!-- Submit Add Button -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-sm fw-bold py-2 rounded-2" id="btn-add-movie-submit">
+                                        <i class="bi bi-check-circle me-1"></i>Save Movie to Database
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ANALYTICS SECTION -->
+                <section class="py-4 bg-white border rounded-3 p-4 shadow-sm mb-4" id="admin-analytics-section">
+                    <h3 class="h5 fw-bold text-dark mb-4"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>System Analytics & Charts</h3>
+                    
+                    <div class="row row-cols-1 row-cols-lg-3 g-3">
+                        <!-- Chart Card 1: Ratings Chart -->
+                        <div class="col">
+                            <div class="card border border-light p-3 bg-light h-100 rounded-3">
+                                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-bar-chart me-1 text-primary"></i>Movie Rating Distribution</h6>
+                                <div class="ratio ratio-16x9 bg-white border rounded p-1" id="movie-chart-container">
+                                    <canvas id="movieChart" aria-label="Movie ratings chart" role="img"></canvas>
+                                </div>
+                                <span class="small text-muted text-center mt-2 d-block">Rating counts by category</span>
+                            </div>
+                        </div>
+
+                        <!-- Chart Card 2: Genre Chart -->
+                        <div class="col">
+                            <div class="card border border-light p-3 bg-light h-100 rounded-3">
+                                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-pie-chart me-1 text-primary"></i>Genre Popularity Analytics</h6>
+                                <div class="ratio ratio-16x9 bg-white border rounded p-1" id="genre-chart-container">
+                                    <canvas id="genreChart" aria-label="Genre popularity chart" role="img"></canvas>
+                                </div>
+                                <span class="small text-muted text-center mt-2 d-block">User interest mapping</span>
+                            </div>
+                        </div>
+
+                        <!-- Chart Card 3: User Activity Chart -->
+                        <div class="col">
+                            <div class="card border border-light p-3 bg-light h-100 rounded-3">
+                                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-line me-1 text-primary"></i>User Activity Analytics</h6>
+                                <div class="ratio ratio-16x9 bg-white border rounded p-1" id="user-chart-container">
+                                    <canvas id="userChart" aria-label="User registrations chart" role="img"></canvas>
+                                </div>
+                                <span class="small text-muted text-center mt-2 d-block">Daily user sessions tracking</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RECENT ACTIVITY SECTION -->
+                <section class="card border-0 shadow-sm p-4 bg-white rounded-3" id="recent-activity-section">
+                    <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-list-stars me-2 text-primary"></i>Recent System Activity Logs</h3>
+                    
+                    <ul class="list-group list-group-flush small" id="activity-log-list">
+                        <!-- Log Item 1 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-start px-0 py-3 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <span class="bg-success text-white rounded-circle p-2 me-3"><i class="bi bi-plus-lg"></i></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-dark">New Movie Added</h6>
+                                    <p class="text-muted mb-0 small">Admin added '<span class="fw-bold">Space Continuum</span>' into the library database.</p>
+                                </div>
+                            </div>
+                            <span class="text-muted small">2 minutes ago</span>
+                        </li>
+                        <!-- Log Item 2 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-start px-0 py-3 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <span class="bg-primary text-white rounded-circle p-2 me-3"><i class="bi bi-person-plus-fill"></i></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-dark">New User Registered</h6>
+                                    <p class="text-muted mb-0 small">User account '<span class="fw-bold">john_doe_2026</span>' was created successfully.</p>
+                                </div>
+                            </div>
+                            <span class="text-muted small">15 minutes ago</span>
+                        </li>
+                        <!-- Log Item 3 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-start px-0 py-3 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <span class="bg-info text-white rounded-circle p-2 me-3"><i class="bi bi-cpu-fill"></i></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-dark">Recommendation Matrix Re-indexed</h6>
+                                    <p class="text-muted mb-0 small">AI re-computed collaborative recommendations for user '<span class="fw-bold">sarah_k</span>'.</p>
+                                </div>
+                            </div>
+                            <span class="text-muted small">30 minutes ago</span>
+                        </li>
+                    </ul>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD FOOTER -->
+    <footer class="bg-dark text-light py-4 mt-auto border-top border-secondary" id="admin-footer-section">
+        <div class="container-fluid px-4">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                <span class="text-secondary small">&copy; 2026 Cinema Scale - Admin Portal. Security Audit Level A1.</span>
+                <div class="d-flex gap-3 small" id="admin-footer-links">
+                    <a href="index.html" class="text-secondary text-decoration-none hover-link">Main Site</a>
+                    <a href="#" class="text-secondary text-decoration-none hover-link">System Privacy Policy</a>
+                    <a href="#" class="text-secondary text-decoration-none hover-link">System Service Agreement</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript Bundle CDN (Includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Local Javascript File -->
+    <script src="static/script.js"></script>
+</body>
+</html>

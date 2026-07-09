@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Scale - Discover Your Next Favorite Movie</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Explore movies, get AI-powered personalized recommendations, view analytics, and connect with a vibrant cinematic community on Cinema Scale.">
+    <meta name="keywords" content="movies, film recommendations, AI movie recommendations, cinema scale, nikhil, satkar, diya, deepika, kritika">
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- A. NAVBAR SECTION -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm" aria-label="Main navigation">
+            <div class="container">
+                <!-- Website Logo -->
+                <a class="navbar-brand fw-bold fs-3" href="index.html" id="site-logo">
+                    <i class="bi bi-film me-2 text-primary"></i>Cinema Scale
+                </a>
+                
+                <!-- Navbar Toggler for Mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!-- Navbar Navigation Links -->
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center" id="navbar-links">
+                        <li class="nav-item">
+                            <a class="nav-link active px-3" aria-current="page" href="index.html" id="nav-home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="#search-section" id="nav-movies">Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="#recommendations-categories" id="nav-recommendations">Recommendations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="#about-section" id="nav-about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="#developers-section" id="nav-developers">Developers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="admin.html" id="nav-admin">Admin</a>
+                        </li>
+                        <!-- CTA Register/Login Button inside Navbar -->
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-outline-primary px-4 rounded-pill" href="auth.html" id="nav-auth">Login/Register</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow-1">
+
+        <!-- B. HERO SECTION -->
+        <section class="hero-section py-5 bg-dark text-light border-bottom border-secondary" id="hero-section">
+            <div class="container py-5">
+                <div class="row align-items-center g-5">
+                    <!-- Left Side Column -->
+                    <div class="col-lg-6" id="hero-left-column">
+                        <h1 class="display-4 fw-extrabold mb-3 text-white" id="hero-heading">
+                            Discover Your Next <span class="text-primary">Favorite Movie</span>
+                        </h1>
+                        <p class="lead mb-4 text-secondary-emphasis" id="hero-description">
+                            Experience Cinema Scale's advanced recommendation engine. Discover new releases, analyze film statistics, and explore personalized suggestions designed for your unique tastes.
+                        </p>
+                        <div class="d-grid gap-3 d-md-flex justify-content-md-start" id="hero-cta-buttons">
+                            <a href="#search-section" class="btn btn-primary btn-lg px-4 py-3 rounded-3" id="btn-explore-movies">
+                                <i class="bi bi-search me-2"></i>Explore Movies
+                            </a>
+                            <a href="#recommendations-categories" class="btn btn-outline-light btn-lg px-4 py-3 rounded-3" id="btn-get-recommendations">
+                                <i class="bi bi-compass me-2"></i>Get Recommendations
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Side Column -->
+                    <div class="col-lg-6" id="hero-right-column">
+                        <!-- Placeholder Container for Canvas/Animations/Carousel -->
+                        <div class="movie-animation-placeholder bg-secondary-subtle border border-secondary border-dashed rounded-4 p-5 d-flex align-items-center justify-content-center shadow-lg" id="hero-animation-container">
+                            <!-- 
+                              DEVELOPER NOTE:
+                              This area will later contain:
+                              - floating movie posters
+                              - canvas animations
+                              - particle systems
+                              - promotional carousel
+                            -->
+                            <div class="text-center py-5">
+                                <i class="bi bi-rocket-takeoff-fill display-2 text-primary mb-3"></i>
+                                <h3 class="h4 text-dark-emphasis fw-bold">Interactive Visualization</h3>
+                                <p class="text-secondary small mb-3">Dynamic component area loaded via custom JavaScript</p>
+                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading animations...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- C. SEARCH & FILTER SECTION -->
+        <section class="search-section py-5 bg-white shadow-sm" id="search-section">
+            <div class="container py-3">
+                <!-- Header -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-8 text-center">
+                        <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill">Search Engine</span>
+                        <h2 class="fw-bold text-dark" id="search-title">Find Your Next Cinema Adventure</h2>
+                        <p class="text-muted" id="search-subtitle">Filter through thousands of titles by genres, rating, year, and language</p>
+                    </div>
+                </div>
+                
+                <!-- Search and Filter Form -->
+                <form id="search-filter-form" class="row justify-content-center g-3">
+                    <!-- Search Input & Button -->
+                    <div class="col-12 col-lg-10">
+                        <div class="input-group input-group-lg border rounded-3 overflow-hidden shadow-sm">
+                            <span class="input-group-text bg-white border-0 ps-3">
+                                <i class="bi bi-search text-muted"></i>
+                            </span>
+                            <input type="search" class="form-control border-0 ps-2" placeholder="Search movies by title, actors, director, or tags..." aria-label="Search movies" id="search-input">
+                            <button class="btn btn-primary px-4 fw-bold" type="submit" id="btn-search">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filters Dropdown Row -->
+                    <div class="col-12 col-lg-10 mt-3">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-2">
+                            <!-- Genre Dropdown -->
+                            <div class="col">
+                                <label for="filter-genre" class="visually-hidden">Genre</label>
+                                <select class="form-select border-secondary-subtle" id="filter-genre">
+                                    <option selected value="">All Genres</option>
+                                    <option value="action">Action</option>
+                                    <option value="comedy">Comedy</option>
+                                    <option value="drama">Drama</option>
+                                    <option value="sci-fi">Sci-Fi</option>
+                                    <option value="horror">Horror</option>
+                                    <option value="romance">Romance</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Year Dropdown -->
+                            <div class="col">
+                                <label for="filter-year" class="visually-hidden">Year</label>
+                                <select class="form-select border-secondary-subtle" id="filter-year">
+                                    <option selected value="">All Years</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2020-2022">2020 - 2022</option>
+                                    <option value="2010s">2010s</option>
+                                    <option value="2000s">2000s</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Language Dropdown -->
+                            <div class="col">
+                                <label for="filter-language" class="visually-hidden">Language</label>
+                                <select class="form-select border-secondary-subtle" id="filter-language">
+                                    <option selected value="">All Languages</option>
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="hi">Hindi</option>
+                                    <option value="ja">Japanese</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Rating Dropdown -->
+                            <div class="col">
+                                <label for="filter-rating" class="visually-hidden">Rating</label>
+                                <select class="form-select border-secondary-subtle" id="filter-rating">
+                                    <option selected value="">All Ratings</option>
+                                    <option value="9">9.0+ Rating</option>
+                                    <option value="8">8.0+ Rating</option>
+                                    <option value="7">7.0+ Rating</option>
+                                    <option value="6">6.0+ Rating</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- D. TRENDING / TOP MOVIES SECTION -->
+        <section class="trending-movies py-5 bg-light" id="trending-section">
+            <div class="container py-3">
+                <div class="row align-items-end mb-4">
+                    <div class="col-md-8 text-center text-md-start">
+                        <h2 class="fw-bold text-dark mb-1" id="trending-title">Trending Now</h2>
+                        <p class="text-muted mb-0" id="trending-subtitle">The most popular movies among users right now</p>
+                    </div>
+                    <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                        <a href="#search-section" class="btn btn-outline-primary rounded-pill">View All Trends <i class="bi bi-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+                
+                <!-- 8 Movie Card Grid -->
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="trending-movie-grid">
+                    <!-- Movie Card 1 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-1">
+                            <!-- Poster Placeholder Container -->
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <!-- Card Content -->
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-danger mb-2 align-self-start">Hot #1</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-1">Movie Poster Placeholder</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-1">Action &bull; Adventure &bull; Sci-Fi</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-1">
+                                            <i class="bi bi-star-fill me-1"></i>8.7
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-1">2026</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-1">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 2 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-2">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-danger mb-2 align-self-start">Hot #2</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-2">Interstellar Sequel</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-2">Sci-Fi &bull; Drama</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-2">
+                                            <i class="bi bi-star-fill me-1"></i>8.9
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-2">2026</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-2">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 3 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-3">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-danger mb-2 align-self-start">Hot #3</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-3">Laughter Unlimited</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-3">Comedy &bull; Romance</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-3">
+                                            <i class="bi bi-star-fill me-1"></i>7.8
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-3">2025</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-3">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 4 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-4">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-4">Night of Terror</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-4">Horror &bull; Thriller</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-4">
+                                            <i class="bi bi-star-fill me-1"></i>7.2
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-4">2025</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-4">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 5 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-5">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-5">Shadows in the Woods</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-5">Mystery &bull; Drama</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-5">
+                                            <i class="bi bi-star-fill me-1"></i>8.1
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-5">2024</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-5">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 6 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-6">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-6">Cybernetic Edge</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-6">Sci-Fi &bull; Action</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-6">
+                                            <i class="bi bi-star-fill me-1"></i>8.4
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-6">2026</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-6">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 7 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-7">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-7">The Historical Epoch</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-7">History &bull; Drama</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-7">
+                                            <i class="bi bi-star-fill me-1"></i>8.0
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-7">2023</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-7">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Movie Card 8 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden" id="trending-card-8">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle movie-poster-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-3">
+                                    <i class="bi bi-image-fill display-5 mb-2"></i>
+                                    <span class="small font-monospace">Poster Placeholder</span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-secondary mb-2 align-self-start">Trending</span>
+                                <h5 class="card-title fw-bold text-dark text-truncate movie-title" id="trending-title-8">Love in Paris</h5>
+                                <p class="card-text text-muted small mb-2 movie-genre" id="trending-genre-8">Romance &bull; Drama</p>
+                                
+                                <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="badge bg-warning text-dark px-2 py-1 movie-rating" id="trending-rating-8">
+                                            <i class="bi bi-star-fill me-1"></i>7.6
+                                        </span>
+                                        <span class="text-muted small movie-year" id="trending-year-8">2024</span>
+                                    </div>
+                                    <a href="movie_info.html" class="btn btn-primary w-100 rounded-2 btn-view-details" id="btn-view-details-8">
+                                        <i class="bi bi-info-circle me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- E. RECOMMENDATION CATEGORIES -->
+        <section class="recommendations-categories py-5 bg-white border-top border-bottom border-light" id="recommendations-categories">
+            <div class="container py-3">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-dark">Explore Recommendations</h2>
+                    <p class="text-muted">Curated and structured categories to fit your mood</p>
+                </div>
+
+                <!-- 1. Popular Movies Category -->
+                <div class="category-group mb-5" id="category-popular">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Popular Movies</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                        <!-- 4 Placeholder Cards -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Popular Movie A</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Popular Movie B</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Popular Movie C</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Popular Movie D</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Highest Rated Category -->
+                <div class="category-group mb-5" id="category-highest-rated">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Highest Rated</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                        <!-- 4 Placeholder Cards -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film X</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film Y</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film Z</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Top Rated Film W</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Recently Released Category -->
+                <div class="category-group mb-5" id="category-recent">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Recently Released</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                        <!-- 4 Placeholder Cards -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">New Release A</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">New Release B</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">New Release C</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">New Release D</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Action Category -->
+                <div class="category-group mb-5" id="category-action">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Action</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                        <!-- 4 Placeholder Cards -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Action Flick 1</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Action Flick 2</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Action Flick 3</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Action Flick 4</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Comedy Category -->
+                <div class="category-group mb-5" id="category-comedy">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Comedy</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                        <!-- 4 Placeholder Cards -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 1</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 2</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 3</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Comedy Show 4</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Drama Category -->
+                <div class="category-group" id="category-drama">
+                    <h3 class="h4 fw-bold text-dark mb-3 border-start border-primary border-4 ps-2">Drama</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                        <!-- 4 Placeholder Cards -->
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 1</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 2</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 3</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="ratio ratio-2x3 bg-secondary-subtle"><div class="d-flex align-items-center justify-content-center text-muted small">Poster</div></div>
+                                <div class="card-body">
+                                    <h6 class="card-title fw-bold text-truncate">Dramatic Tale 4</h6>
+                                    <a href="movie_info.html" class="btn btn-sm btn-outline-primary w-100">View Info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- F. ABOUT CINEMA SCALE SECTION -->
+        <section class="about-section py-5 bg-light" id="about-section">
+            <div class="container py-3">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6">
+                        <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill">Platform Overview</span>
+                        <h2 class="fw-bold text-dark mb-4">About Cinema Scale</h2>
+                        <p class="text-muted leading-relaxed mb-3">
+                            Cinema Scale is a next-generation platform designed specifically for movie enthusiasts who seek smart, customized viewing recommendations. Our robust core architecture provides instant discovery of popular movies, classics, and niche cinema.
+                        </p>
+                        <p class="text-muted leading-relaxed">
+                            Whether you're looking for high-octane blockbusters or critically-acclaimed independent dramas, our indexing helps filter exact cinematic metrics, rating scales, and regional selections to deliver perfect viewing checklists.
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row g-4">
+                            <!-- Detail List Grid -->
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="bi bi-cpu fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold text-dark">AI-powered Recommendations</h5>
+                                        <p class="text-muted small">Algorithmically matches titles with your user interaction logs, watch history, and content tags.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="bi bi-person-check fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold text-dark">Personalized Suggestions</h5>
+                                        <p class="text-muted small">Tailor metrics individually to ignore disliked themes and focus directly on favored cinematic styles.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="bi bi-tags fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold text-dark">Search by Genre</h5>
+                                        <p class="text-muted small">Multi-layered taxonomical structure helps search for cross-genre movies (e.g. Comedy Horror).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="bi bi-bar-chart-line fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold text-dark">Ratings and Analytics</h5>
+                                        <p class="text-muted small">In-depth mathematical scores representing IMDb metrics, critic feedback, and local sentiment indexes.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-start">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="bi bi-compass fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="fw-bold text-dark">Movie Discovery</h5>
+                                        <p class="text-muted small">Find rare indie titles and hidden classic masterworks with our specialized discovery algorithms.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- G. FEATURES SECTION -->
+        <section class="features-section py-5 bg-white border-top border-bottom border-light" id="features-section">
+            <div class="container py-3">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-dark">Interactive Features</h2>
+                    <p class="text-muted">Explore the functional modules of the Cinema Scale platform</p>
+                </div>
+                
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="features-grid">
+                    <!-- Feature 1 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                            <div class="text-primary mb-3">
+                                <i class="bi bi-stars display-5"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-2">Personalized Recommendations</h4>
+                            <p class="text-muted mb-0 small">Get bespoke movie suggestions dynamically tailored to match your specific streaming tastes and review records.</p>
+                        </div>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                            <div class="text-primary mb-3">
+                                <i class="bi bi-pie-chart display-5"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-2">Movie Analytics</h4>
+                            <p class="text-muted mb-0 small">Analyze visual, demographic, and statistical trends across millions of ratings to understand performance ratings.</p>
+                        </div>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                            <div class="text-primary mb-3">
+                                <i class="bi bi-lightning-charge display-5"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-2">Fast Search</h4>
+                            <p class="text-muted mb-0 small">Leverage low-latency searching architecture to query multi-criteria categories instantly without loading delays.</p>
+                        </div>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                            <div class="text-primary mb-3">
+                                <i class="bi bi-speedometer2 display-5"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-2">Admin Dashboard</h4>
+                            <p class="text-muted mb-0 small">Empower administrators to curate catalogs, audit customer records, and review feedback reports systematically.</p>
+                        </div>
+                    </div>
+                    <!-- Feature 5 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                            <div class="text-primary mb-3">
+                                <i class="bi bi-graph-up-arrow display-5"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-2">Interactive Charts</h4>
+                            <p class="text-muted mb-0 small">Generate graphical timelines representing movie statistics, scoring breakdowns, and audience growth charts dynamically.</p>
+                        </div>
+                    </div>
+                    <!-- Feature 6 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                            <div class="text-primary mb-3">
+                                <i class="bi bi-phone display-5"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-2">Responsive Design</h4>
+                            <p class="text-muted mb-0 small">Optimized rendering structure that dynamically adjusts across smartphones, tablets, and large displays.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- H. DEVELOPER TEAM SECTION -->
+        <section class="developers-section py-5 bg-light" id="developers-section">
+            <div class="container py-3">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-dark">Our Engineering Team</h2>
+                    <p class="text-muted">Meet the senior frontend and backend minds behind Cinema Scale</p>
+                </div>
+                
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 justify-content-center" id="developers-grid">
+                    <!-- Developer 1: Nikhil -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center p-3 developer-card" id="dev-card-nikhil">
+                            <!-- Circular SVG Avatar Placeholder -->
+                            <svg class="bd-placeholder-img rounded-circle mx-auto mb-3" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nikhil's Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Avatar Placeholder</title>
+                                <rect width="100%" height="100%" fill="#6c757d"/>
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">N</text>
+                            </svg>
+                            <h5 class="fw-bold text-dark mb-1">Nikhil</h5>
+                            <p class="text-primary small mb-3">Lead System Architect</p>
+                            <!-- Social Icon Placeholders -->
+                            <div class="d-flex justify-content-center gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Nikhil's Github"><i class="bi bi-github"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Nikhil's LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer 2: Satkar -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center p-3 developer-card" id="dev-card-satkar">
+                            <svg class="bd-placeholder-img rounded-circle mx-auto mb-3" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Satkar's Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Avatar Placeholder</title>
+                                <rect width="100%" height="100%" fill="#6c757d"/>
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">S</text>
+                            </svg>
+                            <h5 class="fw-bold text-dark mb-1">Satkar</h5>
+                            <p class="text-primary small mb-3">UI/UX Specialist</p>
+                            <div class="d-flex justify-content-center gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Satkar's Github"><i class="bi bi-github"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Satkar's LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer 3: Diya -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center p-3 developer-card" id="dev-card-diya">
+                            <svg class="bd-placeholder-img rounded-circle mx-auto mb-3" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diya's Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Avatar Placeholder</title>
+                                <rect width="100%" height="100%" fill="#6c757d"/>
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">D</text>
+                            </svg>
+                            <h5 class="fw-bold text-dark mb-1">Diya</h5>
+                            <p class="text-primary small mb-3">Data Scientist</p>
+                            <div class="d-flex justify-content-center gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Diya's Github"><i class="bi bi-github"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Diya's LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer 4: Deepika -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center p-3 developer-card" id="dev-card-deepika">
+                            <svg class="bd-placeholder-img rounded-circle mx-auto mb-3" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Deepika's Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Avatar Placeholder</title>
+                                <rect width="100%" height="100%" fill="#6c757d"/>
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">D</text>
+                            </svg>
+                            <h5 class="fw-bold text-dark mb-1">Deepika</h5>
+                            <p class="text-primary small mb-3">Backend Engineer</p>
+                            <div class="d-flex justify-content-center gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Deepika's Github"><i class="bi bi-github"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Deepika's LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer 5: Kritika -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm text-center p-3 developer-card" id="dev-card-kritika">
+                            <svg class="bd-placeholder-img rounded-circle mx-auto mb-3" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kritika's Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Avatar Placeholder</title>
+                                <rect width="100%" height="100%" fill="#6c757d"/>
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">K</text>
+                            </svg>
+                            <h5 class="fw-bold text-dark mb-1">Kritika</h5>
+                            <p class="text-primary small mb-3">QA & Testing Lead</p>
+                            <div class="d-flex justify-content-center gap-2 mt-auto">
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Kritika's Github"><i class="bi bi-github"></i></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Kritika's LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- I. FOOTER SECTION -->
+    <footer class="bg-dark text-light py-5 mt-auto border-top border-secondary" id="footer-section">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6" id="footer-brand-col">
+                    <h5 class="fw-bold text-white mb-3"><i class="bi bi-film me-2 text-primary"></i>Cinema Scale</h5>
+                    <p class="text-secondary small">
+                        Cinema Scale provides analytical film suggestions and custom indexing vectors to curate the ultimate watching logs. Explore movies, analyze metrics, and discover reviews.
+                    </p>
+                </div>
+                
+                <!-- Col 2: Quick Links -->
+                <div class="col-lg-2 col-md-6" id="footer-links-col">
+                    <h5 class="fw-bold text-white mb-3">Quick Links</h5>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none hover-link">Home</a></li>
+                        <li class="mb-2"><a href="#search-section" class="text-secondary text-decoration-none hover-link">Movies</a></li>
+                        <li class="mb-2"><a href="#recommendations-categories" class="text-secondary text-decoration-none hover-link">Recommendations</a></li>
+                        <li class="mb-2"><a href="#about-section" class="text-secondary text-decoration-none hover-link">About Us</a></li>
+                        <li class="mb-2"><a href="#developers-section" class="text-secondary text-decoration-none hover-link">Developers</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Col 3: Contact Info -->
+                <div class="col-lg-3 col-md-6" id="footer-contact-col">
+                    <h5 class="fw-bold text-white mb-3">Contact Support</h5>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><i class="bi bi-envelope-at me-2 text-primary"></i>support@cinemascale.com</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2 text-primary"></i>+1 (555) 019-2834</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>University Tech Park, Suite 405</li>
+                    </ul>
+                </div>
+                
+                <!-- Col 4: Social Icons -->
+                <div class="col-lg-3 col-md-6" id="footer-social-col">
+                    <h5 class="fw-bold text-white mb-3">Follow Cinema Scale</h5>
+                    <p class="text-secondary small mb-3">Stay updated with the latest releases and developer updates.</p>
+                    <div class="d-flex gap-2" id="footer-social-links">
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Twitter/X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Copyright -->
+            <div class="border-top border-secondary pt-4 mt-4 text-center">
+                <p class="text-secondary small mb-0" id="footer-copyright">
+                    &copy; 2026 Cinema Scale. All Rights Reserved. Built with <i class="bi bi-heart-fill text-danger mx-1"></i> by Nikhil, Satkar, Diya, Deepika, and Kritika.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript Bundle CDN (Includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Local Javascript File -->
+    <script src="static/script.js"></script>
+</body>
+</html>

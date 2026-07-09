@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Scale - Movie Details</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="View comprehensive details, statistics, community reviews, and similar recommendations for this movie on Cinema Scale.">
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- HEADER / NAVBAR SECTION -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm" aria-label="Main navigation">
+            <div class="container">
+                <a class="navbar-brand fw-bold fs-3" href="index.html" id="site-logo">
+                    <i class="bi bi-film me-2 text-primary"></i>Cinema Scale
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center" id="navbar-links">
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="index.html" id="nav-home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active px-3" href="index.html#search-section" id="nav-movies">Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="index.html#recommendations-categories" id="nav-recommendations">Recommendations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="index.html#about-section" id="nav-about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="index.html#developers-section" id="nav-developers">Developers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="admin.html" id="nav-admin">Admin</a>
+                        </li>
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-outline-primary px-4 rounded-pill" href="auth.html" id="nav-auth">Login/Register</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow-1 pb-5">
+        
+        <!-- BREADCRUMB NAVIGATION -->
+        <nav aria-label="breadcrumb" class="bg-white py-2 shadow-sm">
+            <div class="container">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="index.html#search-section">Movies</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Movie Info</li>
+                </ol>
+            </div>
+        </nav>
+
+        <!-- MOVIE BANNER & DETAILS CONTAINER -->
+        <section class="movie-header-section bg-dark text-white py-5" id="movie-header-section">
+            <div class="container">
+                <div class="row g-4">
+                    
+                    <!-- Left Column: Poster Placeholder and Primary Interaction Buttons -->
+                    <div class="col-md-4 col-lg-3" id="movie-info-left-col">
+                        <div class="card bg-secondary-subtle border-0 shadow-lg mb-3">
+                            <div class="ratio ratio-2x3 movie-poster-placeholder" id="movie-details-poster">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-4">
+                                    <i class="bi bi-image-fill display-2 mb-3"></i>
+                                    <span class="fw-bold tracking-wider">POSTER PLACEHOLDER</span>
+                                    <span class="small text-muted text-center mt-2">27" x 40" Portrait Ratio</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Watchlist, Like, and Share Buttons -->
+                        <div class="d-grid gap-2" id="movie-interactions">
+                            <button type="button" class="btn btn-primary btn-lg rounded-2" id="btn-watchlist">
+                                <i class="bi bi-bookmark-plus me-2"></i>Add to Watchlist
+                            </button>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-light w-100" id="btn-like">
+                                        <i class="bi bi-heart me-1"></i> Like
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-light w-100" id="btn-share">
+                                        <i class="bi bi-share me-1"></i> Share
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Meta details, description, cast/crew, and trailer -->
+                    <div class="col-md-8 col-lg-9" id="movie-info-right-col">
+                        
+                        <!-- Movie Title & Release Year -->
+                        <div class="d-flex align-items-center gap-3 flex-wrap mb-2">
+                            <h1 class="display-5 fw-bold text-white mb-0" id="movie-title">Movie Title Placeholder</h1>
+                            <span class="badge bg-secondary fs-6" id="movie-release-year">2026</span>
+                        </div>
+                        
+                        <!-- Meta Stats Row (Genre, Rating, Runtime, Language) -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center mb-4" id="movie-meta-indicators">
+                            <span class="badge bg-warning text-dark px-3 py-2 fs-6" id="movie-imdb-rating" aria-label="IMDb Rating">
+                                <i class="bi bi-star-fill me-1"></i>8.7/10
+                            </span>
+                            <span class="badge bg-primary px-3 py-2 fs-6" id="movie-genre-badge">Action &bull; Sci-Fi</span>
+                            <span class="text-secondary-emphasis px-2" id="movie-runtime"><i class="bi bi-clock me-1"></i>148 mins</span>
+                            <span class="text-secondary-emphasis px-2" id="movie-language"><i class="bi bi-translate me-1"></i>English (Subtitled)</span>
+                        </div>
+                        
+                        <!-- Movie Description -->
+                        <div class="movie-synopsis mb-4">
+                            <h5 class="fw-bold text-light border-bottom border-secondary pb-2">Synopsis</h5>
+                            <p class="text-secondary-emphasis lead mb-0" id="movie-description">
+                                This is a placeholder description for the movie. When integrated with Flask, this area will dynamically render the synopsis from the database. The narrative explores high-concept science fiction elements, intense dramatic conflict, and character-driven stakes that challenge modern audiences.
+                            </p>
+                        </div>
+                        
+                        <!-- Cast and Director Placeholders -->
+                        <div class="row g-3 mb-4" id="crew-details">
+                            <div class="col-md-6" id="director-placeholder-container">
+                                <h6 class="text-light fw-bold uppercase">Director</h6>
+                                <p class="text-secondary-emphasis" id="movie-director">Christopher Nolan Placeholder</p>
+                            </div>
+                            <div class="col-md-6" id="cast-placeholder-container">
+                                <h6 class="text-light fw-bold uppercase">Starring Cast</h6>
+                                <p class="text-secondary-emphasis" id="movie-cast">Lead Actor A, Lead Actress B, Supporting Actor C</p>
+                            </div>
+                        </div>
+
+                        <!-- Trailer Placeholder Container -->
+                        <div class="movie-trailer-wrapper" id="trailer-section">
+                            <h5 class="fw-bold text-light border-bottom border-secondary pb-2 mb-3">Official Trailer</h5>
+                            <div class="ratio ratio-16x9 bg-secondary-subtle rounded overflow-hidden" id="movie-trailer-placeholder">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-secondary p-4">
+                                    <i class="bi bi-play-circle-fill display-3 text-primary mb-2"></i>
+                                    <span class="fw-bold text-uppercase">Trailer Video Placeholder</span>
+                                    <span class="small text-muted mt-1">Embedded HTML5 Player (YouTube/Vimeo)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANALYTICS SECTION -->
+        <section class="analytics-section py-5 bg-white border-bottom border-light" id="analytics-section">
+            <div class="container">
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill">Data Analytics</span>
+                        <h2 class="fw-bold text-dark">Movie Metric Trends</h2>
+                        <p class="text-muted">Real-time engagement scores, audience retention, and ratings breakdown</p>
+                    </div>
+                </div>
+
+                <div class="row g-4 align-items-center">
+                    <!-- Chart Column -->
+                    <div class="col-lg-7" id="analytics-chart-col">
+                        <div class="card border-0 bg-light p-4 shadow-sm h-100">
+                            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-graph-up me-2 text-primary"></i>Ratings & Score Breakdown</h5>
+                            
+                            <!-- Canvas Element for Chart.js -->
+                            <div class="ratio ratio-21x9 bg-white border border-secondary-subtle rounded p-2" id="canvas-container">
+                                <canvas id="movieChart" aria-label="Movie Analytics Chart" role="img"></canvas>
+                            </div>
+                            <span class="small text-muted text-center mt-2 d-block">Chart loaded dynamically using dynamic JavaScript dataset bindings.</span>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Cards Column -->
+                    <div class="col-lg-5" id="analytics-cards-col">
+                        <div class="row g-3">
+                            <!-- Popularity Card -->
+                            <div class="col-6">
+                                <div class="card border-0 bg-light p-3 shadow-sm text-center h-100">
+                                    <h6 class="text-muted small uppercase mb-1">Popularity Rank</h6>
+                                    <span class="display-6 fw-bold text-primary">#14</span>
+                                    <span class="small text-success mt-1"><i class="bi bi-caret-up-fill"></i> Top 5% this week</span>
+                                </div>
+                            </div>
+                            <!-- Recommendation Score Card -->
+                            <div class="col-6">
+                                <div class="card border-0 bg-light p-3 shadow-sm text-center h-100">
+                                    <h6 class="text-muted small uppercase mb-1">AI Match Score</h6>
+                                    <span class="display-6 fw-bold text-primary">94%</span>
+                                    <span class="small text-muted mt-1">Based on preferences</span>
+                                </div>
+                            </div>
+                            <!-- Audience Rating Card -->
+                            <div class="col-6">
+                                <div class="card border-0 bg-light p-3 shadow-sm text-center h-100">
+                                    <h6 class="text-muted small uppercase mb-1">Audience Rating</h6>
+                                    <span class="display-6 fw-bold text-primary">4.6<span class="fs-6 text-muted">/5</span></span>
+                                    <span class="small text-muted mt-1">24.5k User Votes</span>
+                                </div>
+                            </div>
+                            <!-- Critic Rating Card -->
+                            <div class="col-6">
+                                <div class="card border-0 bg-light p-3 shadow-sm text-center h-100">
+                                    <h6 class="text-muted small uppercase mb-1">Critic Rating</h6>
+                                    <span class="display-6 fw-bold text-primary">88%</span>
+                                    <span class="small text-success mt-1"><i class="bi bi-patch-check-fill"></i> Certified Fresh</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMILAR MOVIES SECTION -->
+        <section class="similar-movies-section py-5 bg-light" id="similar-movies-section">
+            <div class="container">
+                <h3 class="fw-bold text-dark mb-4 border-start border-primary border-4 ps-2">People Also Liked</h3>
+                
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3" id="similar-movies-grid">
+                    <!-- Similar Card 1 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle">
+                                <div class="d-flex align-items-center justify-content-center text-secondary small">Poster</div>
+                            </div>
+                            <div class="card-body p-2">
+                                <h6 class="card-title fw-bold text-truncate mb-1">Similar Movie A</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-warning small"><i class="bi bi-star-fill"></i> 8.2</span>
+                                    <span class="text-muted small">2025</span>
+                                </div>
+                                <a href="movie_info.html" class="btn btn-sm btn-primary w-100 mt-2">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Similar Card 2 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle">
+                                <div class="d-flex align-items-center justify-content-center text-secondary small">Poster</div>
+                            </div>
+                            <div class="card-body p-2">
+                                <h6 class="card-title fw-bold text-truncate mb-1">Similar Movie B</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-warning small"><i class="bi bi-star-fill"></i> 7.9</span>
+                                    <span class="text-muted small">2024</span>
+                                </div>
+                                <a href="movie_info.html" class="btn btn-sm btn-primary w-100 mt-2">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Similar Card 3 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle">
+                                <div class="d-flex align-items-center justify-content-center text-secondary small">Poster</div>
+                            </div>
+                            <div class="card-body p-2">
+                                <h6 class="card-title fw-bold text-truncate mb-1">Similar Movie C</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-warning small"><i class="bi bi-star-fill"></i> 8.5</span>
+                                    <span class="text-muted small">2026</span>
+                                </div>
+                                <a href="movie_info.html" class="btn btn-sm btn-primary w-100 mt-2">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Similar Card 4 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle">
+                                <div class="d-flex align-items-center justify-content-center text-secondary small">Poster</div>
+                            </div>
+                            <div class="card-body p-2">
+                                <h6 class="card-title fw-bold text-truncate mb-1">Similar Movie D</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-warning small"><i class="bi bi-star-fill"></i> 8.0</span>
+                                    <span class="text-muted small">2025</span>
+                                </div>
+                                <a href="movie_info.html" class="btn btn-sm btn-primary w-100 mt-2">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Similar Card 5 -->
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            <div class="ratio ratio-2x3 bg-secondary-subtle">
+                                <div class="d-flex align-items-center justify-content-center text-secondary small">Poster</div>
+                            </div>
+                            <div class="card-body p-2">
+                                <h6 class="card-title fw-bold text-truncate mb-1">Similar Movie E</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-warning small"><i class="bi bi-star-fill"></i> 8.4</span>
+                                    <span class="text-muted small">2026</span>
+                                </div>
+                                <a href="movie_info.html" class="btn btn-sm btn-primary w-100 mt-2">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- USER REVIEWS SECTION -->
+        <section class="reviews-section py-5 bg-white border-top border-bottom border-light" id="reviews-section">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-bold text-dark mb-0">Community Reviews</h3>
+                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm" id="btn-write-review">
+                        <i class="bi bi-pencil-square me-1"></i>Write Review
+                    </button>
+                </div>
+                
+                <div class="row g-3" id="reviews-container">
+                    <!-- Review Card 1 -->
+                    <div class="col-12">
+                        <div class="card border-0 bg-light p-3 shadow-sm review-card" id="review-1">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2 p-2" aria-hidden="true">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-dark">Alex_Cinema_Mind</h6>
+                                        <small class="text-muted">Reviewed on June 12, 2026</small>
+                                    </div>
+                                </div>
+                                <div class="rating-display">
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>9/10</span>
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-0">
+                                This film exceeded all my narrative expectations. Christopher Nolan delivers another masterclass in pacing, visual design, and editing. The soundtrack works in lockstep with the suspense. Highly recommended!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Review Card 2 -->
+                    <div class="col-12">
+                        <div class="card border-0 bg-light p-3 shadow-sm review-card" id="review-2">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2 p-2" aria-hidden="true">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-dark">Elena_Reviewer</h6>
+                                        <small class="text-muted">Reviewed on June 05, 2026</small>
+                                    </div>
+                                </div>
+                                <div class="rating-display">
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>8/10</span>
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-0">
+                                Visually spectacular. Some narrative beats felt slightly repetitive in the second act, but the overall climax is absolutely unforgettable. The cast performance makes up for any slight script pacing errors.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RELATED GENRES -->
+        <section class="related-genres py-4 bg-light" id="related-genres-section">
+            <div class="container">
+                <h5 class="fw-bold text-dark mb-3">Related Movie Genres</h5>
+                <div class="d-flex flex-wrap gap-2" id="genre-badge-container">
+                    <a href="index.html#search-section" class="badge bg-secondary-subtle text-secondary-emphasis text-decoration-none px-3 py-2 rounded-pill border">Sci-Fi Thriller</a>
+                    <a href="index.html#search-section" class="badge bg-secondary-subtle text-secondary-emphasis text-decoration-none px-3 py-2 rounded-pill border">Time Travel</a>
+                    <a href="index.html#search-section" class="badge bg-secondary-subtle text-secondary-emphasis text-decoration-none px-3 py-2 rounded-pill border">Space Exploration</a>
+                    <a href="index.html#search-section" class="badge bg-secondary-subtle text-secondary-emphasis text-decoration-none px-3 py-2 rounded-pill border">High-Concept Drama</a>
+                    <a href="index.html#search-section" class="badge bg-secondary-subtle text-secondary-emphasis text-decoration-none px-3 py-2 rounded-pill border">Christopher Nolan</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-dark text-light py-5 mt-auto border-top border-secondary" id="footer-section">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4 col-md-6" id="footer-brand-col">
+                    <h5 class="fw-bold text-white mb-3"><i class="bi bi-film me-2 text-primary"></i>Cinema Scale</h5>
+                    <p class="text-secondary small">
+                        Cinema Scale provides analytical film suggestions and custom indexing vectors to curate the ultimate watching logs. Explore movies, analyze metrics, and discover reviews.
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-6" id="footer-links-col">
+                    <h5 class="fw-bold text-white mb-3">Quick Links</h5>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none hover-link">Home</a></li>
+                        <li class="mb-2"><a href="index.html#search-section" class="text-secondary text-decoration-none hover-link">Movies</a></li>
+                        <li class="mb-2"><a href="index.html#recommendations-categories" class="text-secondary text-decoration-none hover-link">Recommendations</a></li>
+                        <li class="mb-2"><a href="index.html#about-section" class="text-secondary text-decoration-none hover-link">About Us</a></li>
+                        <li class="mb-2"><a href="index.html#developers-section" class="text-secondary text-decoration-none hover-link">Developers</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6" id="footer-contact-col">
+                    <h5 class="fw-bold text-white mb-3">Contact Support</h5>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><i class="bi bi-envelope-at me-2 text-primary"></i>support@cinemascale.com</li>
+                        <li class="mb-2"><i class="bi bi-telephone me-2 text-primary"></i>+1 (555) 019-2834</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>University Tech Park, Suite 405</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6" id="footer-social-col">
+                    <h5 class="fw-bold text-white mb-3">Follow Cinema Scale</h5>
+                    <p class="text-secondary small mb-3">Stay updated with the latest releases and developer updates.</p>
+                    <div class="d-flex gap-2" id="footer-social-links">
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Twitter/X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-top border-secondary pt-4 mt-4 text-center">
+                <p class="text-secondary small mb-0" id="footer-copyright">
+                    &copy; 2026 Cinema Scale. All Rights Reserved. Built with <i class="bi bi-heart-fill text-danger mx-1"></i> by Nikhil, Satkar, Diya, Deepika, and Kritika.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript Bundle CDN (Includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Local Javascript File -->
+    <script src="static/script.js"></script>
+</body>
+</html>
