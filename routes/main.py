@@ -9,10 +9,51 @@ def register_main_routes(app, movies_df, similarity_matrix, list_of_all_titles):
     @app.route("/", methods=["GET"])
     def index():
         search_query = request.args.get("q", "").strip()
+        genre_filter = request.args.get("genre", "").strip()
+        year_min = request.args.get("year_min", "", type=str).strip()
+        year_max = request.args.get("year_max", "", type=str).strip()
+        rating_min = request.args.get("rating_min", "", type=str).strip()
+        language_filter = request.args.get("language", "").strip()
         updated = False
-        if search_query:
-            movies = Movie.query.filter(Movie.title.ilike(f"%{search_query}%")).order_by(Movie.rating.desc()).limit(20).all()
-            # Fetch posters on-demand for search results
+
+        # Collect available genres and languages for the filter dropdowns
+        all_genres = ["Action", "Adventure", "Animation", "Comedy", "Crime", "Drama",
+                      "Family", "Fantasy", "History", "Horror", "Music", "Mystery",
+                      "Romance", "Science Fiction", "Thriller", "War", "Western"]
+        all_languages = db.session.query(Movie.original_language).filter(
+            Movie.original_language.isnot(None),
+            Movie.original_language != ''
+        ).distinct().order_by(Movie.original_language).all()
+        all_languages = sorted(set(lang[0].strip() for lang in all_languages if lang[0] and lang[0].strip()))
+
+        # Check if any filter is active
+        has_filters = any([search_query, genre_filter, year_min, year_max, rating_min, language_filter])
+
+        if has_filters:
+            query = Movie.query
+            if search_query:
+                query = query.filter(Movie.title.ilike(f"%{search_query}%"))
+            if genre_filter:
+                query = query.filter(Movie.genre.ilike(f"%{genre_filter}%"))
+            if year_min:
+                try:
+                    query = query.filter(Movie.year >= int(year_min))
+                except ValueError:
+                    pass
+            if year_max:
+                try:
+                    query = query.filter(Movie.year <= int(year_max))
+                except ValueError:
+                    pass
+            if rating_min:
+                try:
+                    query = query.filter(Movie.rating >= float(rating_min))
+                except ValueError:
+                    pass
+            if language_filter:
+                query = query.filter(Movie.original_language == language_filter)
+
+            movies = query.order_by(Movie.rating.desc()).limit(40).all()
             for m in movies:
                 if ensure_poster(m):
                     updated = True
@@ -25,6 +66,13 @@ def register_main_routes(app, movies_df, similarity_matrix, list_of_all_titles):
                 "index.html",
                 movies=movies,
                 search_query=search_query,
+                genre_filter=genre_filter,
+                year_min=year_min,
+                year_max=year_max,
+                rating_min=rating_min,
+                language_filter=language_filter,
+                all_genres=all_genres,
+                all_languages=all_languages,
                 categorized_movies={}
             )
 
@@ -60,6 +108,13 @@ def register_main_routes(app, movies_df, similarity_matrix, list_of_all_titles):
             "index.html",
             movies=trending_movies,
             search_query=search_query,
+            genre_filter=genre_filter,
+            year_min=year_min,
+            year_max=year_max,
+            rating_min=rating_min,
+            language_filter=language_filter,
+            all_genres=all_genres,
+            all_languages=all_languages,
             categorized_movies=categorized_movies
         )
 

@@ -1130,3 +1130,409 @@ body.light-theme .movie-reel-container::after {
         height: 130px;
     }
 }
+
+/* ==========================================
+   Clickable Movie Card Links
+   ========================================== */
+
+.movie-card-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none !important;
+    border-radius: inherit;
+}
+
+.movie-card-link:hover,
+.movie-card-link:focus {
+    color: inherit;
+    text-decoration: none !important;
+}
+
+.movie-card-link .movie-card {
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s ease;
+}
+
+.movie-card-link:hover .movie-card {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), var(--shadow-glow) !important;
+}
+
+.movie-card-link .card-title {
+    color: var(--text-primary);
+}
+
+.movie-card-link .card-text,
+.movie-card-link .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+/* ==========================================
+   View More Button
+   ========================================== */
+
+#btn-view-more-similar {
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+#btn-view-more-similar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(var(--accent-purple-rgb), 0.3);
+}
+
+/* ==========================================
+   Advanced Filter Panel Styles
+   ========================================== */
+
+#advancedFilters .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color) !important;
+}
+
+#advancedFilters .form-label {
+    color: var(--text-secondary) !important;
+}
+
+#advancedFilters .form-select,
+#advancedFilters .form-control {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+#advancedFilters .form-select:focus,
+#advancedFilters .form-control:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 0.2rem rgba(var(--accent-purple-rgb), 0.25);
+}
+
+#btn-toggle-filters {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+#btn-toggle-filters:hover,
+#btn-toggle-filters:not(.collapsed) {
+    background: rgba(var(--accent-purple-rgb), 0.1);
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE - Comprehensive
+   ========================================== */
+
+/* ---- Tablets & Small Laptops (≤992px) ---- */
+@media (max-width: 992px) {
+    /* Hero section */
+    .hero-section .display-4 {
+        font-size: 2.2rem;
+    }
+    .hero-section .lead {
+        font-size: 1rem;
+    }
+
+    /* Movie detail page - stats row */
+    #metadata-stats-row .col-4 {
+        flex: 0 0 auto;
+        width: 33.333%;
+    }
+    #metadata-stats-row .fw-bold.fs-5 {
+        font-size: 1rem !important;
+    }
+
+    /* Profile header */
+    #profile-header .display-6 {
+        font-size: 1.6rem;
+    }
+}
+
+/* ---- Mobile (≤768px) ---- */
+@media (max-width: 768px) {
+    /* Hero section - stack vertically */
+    .hero-section .row {
+        flex-direction: column;
+    }
+    .hero-section .display-4 {
+        font-size: 1.8rem;
+    }
+    .hero-section .lead {
+        font-size: 0.95rem;
+    }
+    .hero-section .btn-lg {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    /* Hide movie reel on tablets */
+    #hero-right-column {
+        display: none !important;
+    }
+
+    /* Section headings */
+    .display-6, h1.display-6 {
+        font-size: 1.5rem;
+    }
+    h2.fw-bold {
+        font-size: 1.4rem;
+    }
+    h3.fw-bold, .h4.fw-bold {
+        font-size: 1.15rem;
+    }
+
+    /* Movie detail page */
+    #movie-title.display-5 {
+        font-size: 1.6rem;
+    }
+    #metadata-stats-row .col-4 {
+        flex: 0 0 50%;
+        width: 50%;
+    }
+    #metadata-stats-row .col-4:last-child {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+    #metadata-stats-row .fw-bold.fs-5 {
+        font-size: 0.9rem !important;
+    }
+
+    /* Analytics cards */
+    #analytics-cards-col .col-6 .display-6 {
+        font-size: 1.5rem;
+    }
+
+    /* Review cards */
+    .review-card {
+        padding: 0.75rem !important;
+    }
+
+    /* Footer stacking */
+    footer .row .col-md-4,
+    footer .row .col-md-3 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Profile header */
+    #profile-header .row {
+        flex-direction: column;
+        text-align: center;
+    }
+    #profile-header .col-auto {
+        margin: 0 auto;
+    }
+    #profile-header .d-flex.gap-3 {
+        justify-content: center;
+    }
+
+    /* Category page header */
+    .category-page-main h1.display-6 {
+        font-size: 1.4rem;
+    }
+
+    /* Pagination mobile */
+    .pagination {
+        gap: 2px;
+    }
+    .pagination .page-link {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    /* Developer cards */
+    #developers-grid .developer-card img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+    #developers-grid .developer-card h5 {
+        font-size: 0.95rem;
+    }
+
+    /* About section */
+    .about-section .row {
+        flex-direction: column;
+    }
+
+    /* Features section */
+    #features-grid .card {
+        padding: 1.5rem !important;
+    }
+    #features-grid .display-5 {
+        font-size: 2rem;
+    }
+}
+
+/* ---- Small Phones (≤576px) ---- */
+@media (max-width: 576px) {
+    /* General spacing */
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    /* Hero section */
+    .hero-section .display-4 {
+        font-size: 1.5rem;
+    }
+    .hero-section .lead {
+        font-size: 0.88rem;
+    }
+    .hero-section .d-md-flex {
+        flex-direction: column;
+    }
+    .hero-section .btn-lg {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Movie reel - definitely hidden */
+    #hero-right-column {
+        display: none !important;
+    }
+
+    /* Headings */
+    .display-6, h1.display-6 {
+        font-size: 1.3rem;
+    }
+    h2.fw-bold {
+        font-size: 1.2rem;
+    }
+
+    /* Search bar */
+    #search-filter-form .input-group-lg .form-control {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+    #search-filter-form .input-group-lg .btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    /* Advanced filter panel */
+    #advancedFilters .row.g-3 > .col-6,
+    #advancedFilters .row.g-3 > .col-md-2,
+    #advancedFilters .row.g-3 > .col-md-3 {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+
+    /* Card text */
+    .movie-card .card-title {
+        font-size: 0.85rem;
+    }
+    .movie-card .card-text {
+        font-size: 0.75rem;
+    }
+
+    /* Movie detail page */
+    #movie-title.display-5 {
+        font-size: 1.3rem;
+    }
+    #movie-meta-indicators .badge {
+        font-size: 0.7rem !important;
+        padding: 0.3rem 0.5rem !important;
+    }
+    #metadata-stats-row .col-4 {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+    #metadata-stats-row .card {
+        padding: 0.5rem !important;
+    }
+    #metadata-stats-row .fw-bold.fs-5 {
+        font-size: 0.85rem !important;
+    }
+    .movie-synopsis .lead {
+        font-size: 0.95rem;
+    }
+
+    /* Movie interactions buttons */
+    #movie-interactions .btn-lg {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    /* Analytics section */
+    #analytics-cards-col .display-6 {
+        font-size: 1.3rem;
+    }
+
+    /* Profile badges */
+    #profile-header .badge {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem !important;
+    }
+
+    /* Auth page */
+    .auth-container .card {
+        padding: 1rem !important;
+    }
+
+    /* Navbar */
+    .navbar .navbar-brand {
+        font-size: 1.1rem;
+    }
+    .navbar .nav-link {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.9rem;
+    }
+
+    /* Developer section - 2 per row on phone */
+    #developers-grid {
+        --bs-gutter-x: 0.5rem;
+    }
+    #developers-grid .developer-card {
+        padding: 0.75rem !important;
+    }
+    #developers-grid .developer-card img {
+        width: 64px !important;
+        height: 64px !important;
+    }
+    #developers-grid .developer-card h5 {
+        font-size: 0.85rem;
+    }
+    #developers-grid .developer-card .small {
+        font-size: 0.7rem;
+    }
+
+    /* Features cards */
+    #features-grid .card {
+        padding: 1rem !important;
+    }
+    #features-grid h4 {
+        font-size: 1rem;
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+    }
+    footer .col-md-4,
+    footer .col-md-3 {
+        margin-bottom: 1rem;
+    }
+
+    /* Hover effects - disable on touch */
+    .movie-card-link:hover .movie-card {
+        transform: none;
+        box-shadow: var(--shadow-card) !important;
+    }
+}
+
+/* Touch device detection - reduce hover effects */
+@media (hover: none) {
+    .movie-card-link:hover .movie-card {
+        transform: none;
+    }
+    .movie-card:hover {
+        transform: none;
+    }
+}

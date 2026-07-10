@@ -96,18 +96,93 @@
                     </div>
                 </div>
                 
-                <!-- Search and Filter Form -->
-                <form method="get" action="{{ url_for('index') }}" id="search-filter-form" class="row justify-content-center g-3">
-                    <!-- Search Input & Button -->
-                    <div class="col-12 col-lg-10">
-                        <div class="input-group input-group-lg border rounded-3 overflow-hidden shadow-sm">
-                            <span class="input-group-text bg-white border-0 ps-3">
-                                <i class="bi bi-search text-muted"></i>
-                            </span>
-                            <input type="search" class="form-control border-0 ps-2" name="q" placeholder="Search movies by title..." aria-label="Search movies" id="search-input" value="{{ search_query or '' }}">
-                            <button class="btn btn-primary px-4 fw-bold" type="submit" id="btn-search">
-                                Search
+                <!-- Search and Advanced Filter Form -->
+                <form method="get" action="{{ url_for('index') }}" id="search-filter-form">
+                    <!-- Title Search Bar -->
+                    <div class="row justify-content-center g-3 mb-3">
+                        <div class="col-12 col-lg-10">
+                            <div class="input-group input-group-lg border rounded-3 overflow-hidden shadow-sm">
+                                <span class="input-group-text bg-white border-0 ps-3">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
+                                <input type="search" class="form-control border-0 ps-2" name="q" placeholder="Search movies by title..." aria-label="Search movies" id="search-input" value="{{ search_query or '' }}">
+                                <button class="btn btn-primary px-4 fw-bold" type="submit" id="btn-search">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Filters Toggle -->
+                    <div class="row justify-content-center mb-2">
+                        <div class="col-12 col-lg-10 text-center">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-4" type="button" data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="false" aria-controls="advancedFilters" id="btn-toggle-filters">
+                                <i class="bi bi-sliders me-1"></i>Advanced Filters
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Advanced Filter Panel -->
+                    <div class="collapse {% if genre_filter or year_min or year_max or rating_min or language_filter %}show{% endif %}" id="advancedFilters">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10">
+                                <div class="card border-0 shadow-sm p-3 p-md-4 rounded-4 mt-2">
+                                    <div class="row g-3 align-items-end">
+                                        <!-- Genre Filter -->
+                                        <div class="col-6 col-md-3">
+                                            <label for="filter-genre" class="form-label small fw-bold text-muted mb-1">Genre</label>
+                                            <select class="form-select form-select-sm" name="genre" id="filter-genre">
+                                                <option value="">All Genres</option>
+                                                {% for g in all_genres|default([]) %}
+                                                <option value="{{ g }}" {% if genre_filter == g %}selected{% endif %}>{{ g }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <!-- Year Min -->
+                                        <div class="col-6 col-md-2">
+                                            <label for="filter-year-min" class="form-label small fw-bold text-muted mb-1">Year From</label>
+                                            <input type="number" class="form-control form-control-sm" name="year_min" id="filter-year-min" placeholder="e.g. 2000" min="1900" max="2030" value="{{ year_min or '' }}">
+                                        </div>
+                                        <!-- Year Max -->
+                                        <div class="col-6 col-md-2">
+                                            <label for="filter-year-max" class="form-label small fw-bold text-muted mb-1">Year To</label>
+                                            <input type="number" class="form-control form-control-sm" name="year_max" id="filter-year-max" placeholder="e.g. 2025" min="1900" max="2030" value="{{ year_max or '' }}">
+                                        </div>
+                                        <!-- Min Rating -->
+                                        <div class="col-6 col-md-2">
+                                            <label for="filter-rating" class="form-label small fw-bold text-muted mb-1">Min Rating</label>
+                                            <select class="form-select form-select-sm" name="rating_min" id="filter-rating">
+                                                <option value="">Any</option>
+                                                <option value="9" {% if rating_min == '9' %}selected{% endif %}>9+ ★</option>
+                                                <option value="8" {% if rating_min == '8' %}selected{% endif %}>8+ ★</option>
+                                                <option value="7" {% if rating_min == '7' %}selected{% endif %}>7+ ★</option>
+                                                <option value="6" {% if rating_min == '6' %}selected{% endif %}>6+ ★</option>
+                                                <option value="5" {% if rating_min == '5' %}selected{% endif %}>5+ ★</option>
+                                            </select>
+                                        </div>
+                                        <!-- Language Filter -->
+                                        <div class="col-6 col-md-3">
+                                            <label for="filter-language" class="form-label small fw-bold text-muted mb-1">Language</label>
+                                            <select class="form-select form-select-sm" name="language" id="filter-language">
+                                                <option value="">All Languages</option>
+                                                {% for lang in all_languages|default([]) %}
+                                                <option value="{{ lang }}" {% if language_filter == lang %}selected{% endif %}>{{ lang|upper }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 d-flex justify-content-end gap-2">
+                                            <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                                <i class="bi bi-x-circle me-1"></i>Clear
+                                            </a>
+                                            <button type="submit" class="btn btn-sm btn-primary rounded-pill px-4">
+                                                <i class="bi bi-funnel me-1"></i>Apply Filters
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -132,6 +207,7 @@
                     {% if movies %}
                         {% for movie in movies %}
                         <div class="col">
+                            <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="movie-card-link text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden">
                                 {% if movie.poster_path %}
                                 <div class="ratio ratio-2x3">
@@ -149,18 +225,16 @@
                                     <h5 class="card-title fw-bold text-truncate" title="{{ movie.title }}">{{ movie.title }}</h5>
                                     <p class="card-text text-muted small mb-2">{{ movie.genre|truncate(30) }} &bull; {{ movie.year }}</p>
                                     <div class="mt-auto pt-3 border-top">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex justify-content-between align-items-center">
                                             <span class="badge bg-warning text-dark px-2 py-1">
                                                 <i class="bi bi-star-fill me-1"></i>{{ movie.rating }}
                                             </span>
                                             <span class="text-muted small">{{ movie.year }}</span>
                                         </div>
-                                        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-primary w-100 rounded-2">
-                                            <i class="bi bi-info-circle me-1"></i>View Details
-                                        </a>
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         {% endfor %}
                     {% else %}
@@ -193,6 +267,7 @@
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 movie-row" id="row-{{ category | replace(' ', '-') | replace('&', '') }}">
                         {% for movie in cat_movies %}
                         <div class="col movie-card-col">
+                            <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="movie-card-link text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm movie-card overflow-hidden">
                                 {% if movie.poster_path %}
                                 <div class="ratio ratio-2x3">
@@ -213,12 +288,11 @@
                                         <span class="badge bg-warning text-dark px-2 py-1">
                                             <i class="bi bi-star-fill me-1"></i>{{ movie.rating }}
                                         </span>
-                                        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-sm btn-primary rounded-2">
-                                            View Details
-                                        </a>
+                                        <span class="text-muted small">{{ movie.year }}</span>
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         {% endfor %}
                     </div>

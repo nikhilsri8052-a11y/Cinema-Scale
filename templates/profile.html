@@ -48,9 +48,10 @@
                     <i class="bi bi-heart-fill text-danger me-2"></i>Liked Movies
                 </h3>
                 {% if liked_movies %}
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
                     {% for movie in liked_movies %}
                     <div class="col">
+                        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="movie-card-link text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm overflow-hidden movie-card">
                             {% if movie.poster_path %}
                             <div class="ratio ratio-2x3">
@@ -65,13 +66,13 @@
                             {% endif %}
                             <div class="card-body p-2 d-flex flex-column">
                                 <h6 class="card-title fw-bold text-truncate mb-1" title="{{ movie.title }}">{{ movie.title }}</h6>
-                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i> {{ movie.rating }}</span>
                                     <span class="text-muted small">{{ movie.year }}</span>
                                 </div>
-                                <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-sm btn-primary w-100 mt-auto">View</a>
                             </div>
                         </div>
+                        </a>
                     </div>
                     {% endfor %}
                 </div>
@@ -90,9 +91,10 @@
                     <i class="bi bi-bookmark-fill text-warning me-2"></i>My Watchlist
                 </h3>
                 {% if saved_movies %}
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3">
                     {% for movie in saved_movies %}
                     <div class="col">
+                        <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="movie-card-link text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm overflow-hidden movie-card">
                             {% if movie.poster_path %}
                             <div class="ratio ratio-2x3">
@@ -107,13 +109,13 @@
                             {% endif %}
                             <div class="card-body p-2 d-flex flex-column">
                                 <h6 class="card-title fw-bold text-truncate mb-1" title="{{ movie.title }}">{{ movie.title }}</h6>
-                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i> {{ movie.rating }}</span>
                                     <span class="text-muted small">{{ movie.year }}</span>
                                 </div>
-                                <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-sm btn-primary w-100 mt-auto">View</a>
                             </div>
                         </div>
+                        </a>
                     </div>
                     {% endfor %}
                 </div>

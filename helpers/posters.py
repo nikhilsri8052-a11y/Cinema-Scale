@@ -26,8 +26,9 @@ def fetch_poster_by_tmdb_id(tmdb_id):
             poster = data.get('poster_path')
             if poster:
                 return f"{IMAGE_BASE_URL}{poster}"
-    except Exception as e:
-        print(f"TMDB poster fetch failed for ID '{tmdb_id}': {e}")
+    except Exception:
+        # Silently fail TMDB direct lookup so Wikipedia fallback can handle it cleanly
+        pass
     
     return None
 
@@ -117,8 +118,8 @@ def fetch_tmdb_info(movie_title):
                             'vote_average': float(movie.get('vote_average') or 0.0),
                             'vote_count': int(movie.get('vote_count') or 0)
                         }
-    except Exception as e:
-        print(f"TMDB deep metadata request failed for '{movie_title}': {e}")
+    except Exception:
+        pass
         
     return fallback_data
 

@@ -223,10 +223,11 @@
             <div class="container">
                 <h3 class="fw-bold mb-4 border-start border-primary border-4 ps-2">People Also Liked</h3>
                 
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3" id="similar-movies-grid">
+                <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-3" id="similar-movies-grid">
                     {% if similar_movies %}
                         {% for rec in similar_movies %}
-                        <div class="col">
+                        <div class="col similar-movie-item {% if loop.index > 5 %}d-none{% endif %}">
+                            <a href="{{ url_for('movie_detail', movie_id=rec.id) }}" class="movie-card-link text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm overflow-hidden movie-card">
                                 {% if rec.poster_path %}
                                 <div class="ratio ratio-2x3">
@@ -245,9 +246,9 @@
                                             <span class="text-muted small">{{ rec.year }}</span>
                                         </div>
                                     </div>
-                                    <a href="{{ url_for('movie_detail', movie_id=rec.id) }}" class="btn btn-sm btn-primary w-100 mt-2">View Details</a>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         {% endfor %}
                     {% else %}
@@ -256,6 +257,14 @@
                         </div>
                     {% endif %}
                 </div>
+
+                {% if similar_movies|length > 5 %}
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary rounded-pill px-4" id="btn-view-more-similar" onclick="document.querySelectorAll('.similar-movie-item.d-none').forEach(el => el.classList.remove('d-none')); this.style.display='none';">
+                        <i class="bi bi-plus-circle me-1"></i>View More Recommendations
+                    </button>
+                </div>
+                {% endif %}
             </div>
         </section>
 
