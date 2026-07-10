@@ -2,7 +2,7 @@ import os
 import sqlite3
 import time
 import requests
-from recommend import fetch_wikipedia_poster
+from helpers.posters import fetch_wikipedia_poster
 
 DB_PATH = os.path.join("instance", "movie_app.db")
 

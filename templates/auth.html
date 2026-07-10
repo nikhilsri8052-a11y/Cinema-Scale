@@ -78,6 +78,11 @@
                                             Login
                                         </button>
                                     </div>
+                                    <div class="text-center mb-3">
+                                        <a href="#" id="admin-quick-login" class="text-decoration-none small fw-semibold" style="color: var(--accent-purple);">
+                                            <i class="bi bi-shield-lock me-1"></i>Login as Admin (Demo)
+                                        </a>
+                                    </div>
                                 </form>
                             </div>
 
@@ -134,4 +139,30 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const adminLink = document.getElementById('admin-quick-login');
+    if (adminLink) {
+        adminLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+            if (emailInput && passwordInput) {
+                emailInput.value = 'admin@movie.com';
+                passwordInput.value = 'admin123';
+                
+                const loginTabButton = document.getElementById('login-tab');
+                if (loginTabButton && !loginTabButton.classList.contains('active')) {
+                    loginTabButton.click();
+                }
+                
+                document.getElementById('login-form').submit();
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
