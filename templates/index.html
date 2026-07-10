@@ -1,96 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinema Scale - Discover Your Next Favorite Movie</title>
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Explore movies, get AI-powered personalized recommendations, view analytics, and connect with a vibrant cinematic community on Cinema Scale.">
-    <meta name="keywords" content="movies, film recommendations, AI movie recommendations, cinema scale, nikhil, satkar, diya, deepika, kritika">
-    
-    <!-- Bootstrap 5 CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
-    <!-- Bootstrap Icons CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    <!-- Local Stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="bg-light d-flex flex-column min-vh-100">
+{% extends "base.html" %}
 
-    <!-- A. NAVBAR SECTION -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm" aria-label="Main navigation">
-            <div class="container">
-                <!-- Website Logo -->
-                <a class="navbar-brand fw-bold fs-3" href="{{ url_for('index') }}" id="site-logo">
-                    <i class="bi bi-film me-2 text-primary"></i>Cinema Scale
-                </a>
-                
-                <!-- Navbar Toggler for Mobile -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <!-- Navbar Navigation Links -->
-                <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center" id="navbar-links">
-                        <li class="nav-item">
-                            <a class="nav-link active px-3" aria-current="page" href="{{ url_for('index') }}" id="nav-home">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="#search-section" id="nav-movies">Movies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="#recommendations-categories" id="nav-recommendations">Recommendations</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="#about-section" id="nav-about">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="#developers-section" id="nav-developers">Developers</a>
-                        </li>
-                        {% if is_admin %}
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="{{ url_for('admin') }}" id="nav-admin">Admin</a>
-                        </li>
-                        {% endif %}
-                        <!-- Auth/Profile Button -->
-                        <li class="nav-item ms-lg-2">
-                            {% if is_logged_in %}
-                            <div class="dropdown">
-                                <a class="btn btn-outline-primary px-4 rounded-pill dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="nav-user-menu">
-                                    <i class="bi bi-person-circle me-1"></i>{{ current_user.username }}
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow">
-                                    <li><a class="dropdown-item" href="{{ url_for('profile') }}"><i class="bi bi-person me-2"></i>My Profile</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
-                                </ul>
-                            </div>
-                            {% else %}
-                            <a class="btn btn-outline-primary px-4 rounded-pill" href="{{ url_for('auth') }}" id="nav-auth">Login/Register</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+{% block title %}Cinema Scale - Discover Your Next Favorite Movie{% endblock %}
+{% block meta_description %}Explore movies, get AI-powered personalized recommendations, view analytics, and connect with a vibrant cinematic community on Cinema Scale.{% endblock %}
 
-    <main class="flex-grow-1">
+{% block nav_home_class %}active{% endblock %}
+
+{% block content %}
 
         <!-- B. HERO SECTION -->
-        <section class="hero-section py-5 bg-dark text-light border-bottom border-secondary" id="hero-section">
+        <section class="hero-section py-5" id="hero-section">
             <div class="container py-5">
                 <div class="row align-items-center g-5">
                     <!-- Left Side Column -->
                     <div class="col-lg-6" id="hero-left-column">
-                        <h1 class="display-4 fw-extrabold mb-3 text-white" id="hero-heading">
-                            Discover Your Next <span class="text-primary">Favorite Movie</span>
+                        <h1 class="display-4 fw-extrabold mb-3" id="hero-heading">
+                            Discover Your Next <span style="color: var(--accent-gold);">Favorite Movie</span>
                         </h1>
-                        <p class="lead mb-4 text-secondary-emphasis" id="hero-description">
+                        <p class="lead mb-4" style="color: var(--text-secondary);" id="hero-description">
                             Experience Cinema Scale's advanced recommendation engine. Discover new releases, analyze film statistics, and explore personalized suggestions designed for your unique tastes.
                         </p>
                         <div class="d-grid gap-3 d-md-flex justify-content-md-start" id="hero-cta-buttons">
@@ -103,15 +29,53 @@
                         </div>
                     </div>
                     
-                    <!-- Right Side Column -->
+                    <!-- Right Side Column — Movie Reel Animation -->
                     <div class="col-lg-6" id="hero-right-column">
-                        <div class="movie-animation-placeholder bg-secondary-subtle border border-secondary border-dashed rounded-4 p-5 d-flex align-items-center justify-content-center shadow-lg" id="hero-animation-container">
-                            <div class="text-center py-5">
-                                <i class="bi bi-rocket-takeoff-fill display-2 text-primary mb-3"></i>
-                                <h3 class="h4 text-dark-emphasis fw-bold">Interactive Visualization</h3>
-                                <p class="text-secondary small mb-3">Dynamic component area loaded via custom JavaScript</p>
-                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
-                                    <span class="visually-hidden">Loading animations...</span>
+                        <div class="movie-reel-container" id="hero-animation-container">
+                            <div class="movie-reel-tracks">
+                                <!-- Track 1: Scrolls Up (top to bottom visually = translateY negative) -->
+                                <div class="movie-reel-track movie-reel-track--up">
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911BTUgMe1nS66C.jpg" alt="Inception"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg" alt="The Grand Budapest Hotel"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg" alt="The Lord of the Rings"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QI4S2t0POtL.jpg" alt="Whiplash"></div>
+                                    <!-- Duplicated for seamless loop -->
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911BTUgMe1nS66C.jpg" alt="Inception"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg" alt="The Grand Budapest Hotel"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg" alt="The Lord of the Rings"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QI4S2t0POtL.jpg" alt="Whiplash"></div>
+                                </div>
+                                
+                                <!-- Track 2: Scrolls Down -->
+                                <div class="movie-reel-track movie-reel-track--down">
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" alt="The Shawshank Redemption"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg" alt="Joker"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIR3UmVJ.jpg" alt="Frozen"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDhRkUUOCEDXJ22.jpg" alt="Avengers Endgame"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Interstellar"></div>
+                                    <!-- Duplicated for seamless loop -->
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" alt="The Shawshank Redemption"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg" alt="Joker"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIR3UmVJ.jpg" alt="Frozen"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDhRkUUOCEDXJ22.jpg" alt="Avengers Endgame"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Interstellar"></div>
+                                </div>
+                                
+                                <!-- Track 3: Scrolls Up (same as 1) -->
+                                <div class="movie-reel-track movie-reel-track--up">
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" alt="The Dark Knight"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg" alt="Spirited Away"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Matrix"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg" alt="Spider-Man No Way Home"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/sv1xJUazXeYqALzczSZ3O6nkH75.jpg" alt="Fight Club"></div>
+                                    <!-- Duplicated for seamless loop -->
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" alt="The Dark Knight"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg" alt="Spirited Away"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Matrix"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg" alt="Spider-Man No Way Home"></div>
+                                    <div class="movie-reel-poster"><img src="https://image.tmdb.org/t/p/w500/sv1xJUazXeYqALzczSZ3O6nkH75.jpg" alt="Fight Club"></div>
                                 </div>
                             </div>
                         </div>
@@ -121,13 +85,13 @@
         </section>
 
         <!-- C. SEARCH & FILTER SECTION -->
-        <section class="search-section py-5 bg-white shadow-sm" id="search-section">
+        <section class="search-section py-5" id="search-section">
             <div class="container py-3">
                 <!-- Header -->
                 <div class="row justify-content-center mb-4">
                     <div class="col-lg-8 text-center">
                         <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill">Search Engine</span>
-                        <h2 class="fw-bold text-dark" id="search-title">Find Your Next Cinema Adventure</h2>
+                        <h2 class="fw-bold" id="search-title">Find Your Next Cinema Adventure</h2>
                         <p class="text-muted" id="search-subtitle">Filter through thousands of titles by genres, rating, year, and language</p>
                     </div>
                 </div>
@@ -151,11 +115,11 @@
         </section>
 
         <!-- D. TRENDING / TOP MOVIES SECTION -->
-        <section class="trending-movies py-5 bg-light" id="trending-section">
+        <section class="trending-movies py-5" id="trending-section">
             <div class="container py-3">
                 <div class="row align-items-end mb-4">
                     <div class="col-md-8 text-center text-md-start">
-                        <h2 class="fw-bold text-dark mb-1" id="trending-title">Trending Now</h2>
+                        <h2 class="fw-bold mb-1" id="trending-title">Trending Now</h2>
                         <p class="text-muted mb-0" id="trending-subtitle">The most popular movies among users right now</p>
                     </div>
                     <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
@@ -182,9 +146,9 @@
                                 </div>
                                 {% endif %}
                                 <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title fw-bold text-dark text-truncate" title="{{ movie.title }}">{{ movie.title }}</h5>
+                                    <h5 class="card-title fw-bold text-truncate" title="{{ movie.title }}">{{ movie.title }}</h5>
                                     <p class="card-text text-muted small mb-2">{{ movie.genre|truncate(30) }} &bull; {{ movie.year }}</p>
-                                    <div class="mt-auto pt-3 border-top border-light">
+                                    <div class="mt-auto pt-3 border-top">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <span class="badge bg-warning text-dark px-2 py-1">
                                                 <i class="bi bi-star-fill me-1"></i>{{ movie.rating }}
@@ -209,10 +173,10 @@
         </section>
 
         <!-- E. RECOMMENDATION CATEGORIES -->
-        <section class="recommendations-categories py-5 bg-white border-top border-bottom border-light" id="recommendations-categories">
+        <section class="recommendations-categories py-5" id="recommendations-categories">
             <div class="container py-3">
                 <div class="text-center mb-5">
-                    <h2 class="fw-bold text-dark">Explore Recommendations</h2>
+                    <h2 class="fw-bold">Explore Recommendations</h2>
                     <p class="text-muted">Curated and structured categories to fit your mood</p>
                 </div>
 
@@ -220,7 +184,7 @@
                 <!-- Category Block: {{ category }} -->
                 <div class="category-group mb-5" id="category-{{ category | replace(' ', '-') | replace('&', '') }}">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3 class="h4 fw-bold text-dark border-start border-primary border-4 ps-2 mb-0">{{ category }}</h3>
+                        <h3 class="h4 fw-bold border-start border-primary border-4 ps-2 mb-0">{{ category }}</h3>
                         <a href="{{ url_for('category', genre=category) }}" class="btn btn-sm btn-outline-primary rounded-pill animate-hover">
                             View More <i class="bi bi-arrow-right ms-1"></i>
                         </a>
@@ -243,9 +207,9 @@
                                 </div>
                                 {% endif %}
                                 <div class="card-body d-flex flex-column p-3">
-                                    <h6 class="card-title fw-bold text-dark text-truncate mb-1" title="{{ movie.title }}">{{ movie.title }}</h6>
+                                    <h6 class="card-title fw-bold text-truncate mb-1" title="{{ movie.title }}">{{ movie.title }}</h6>
                                     <p class="card-text text-muted small mb-2">{{ movie.year }} &bull; {{ category }}</p>
-                                    <div class="mt-auto pt-2 border-top border-light d-flex justify-content-between align-items-center">
+                                    <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                                         <span class="badge bg-warning text-dark px-2 py-1">
                                             <i class="bi bi-star-fill me-1"></i>{{ movie.rating }}
                                         </span>
@@ -264,12 +228,12 @@
         </section>
         
         
-        <section class="about-section py-5 bg-light" id="about-section">
+        <section class="about-section py-5" id="about-section">
             <div class="container py-3">
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6">
                         <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill">Platform Overview</span>
-                        <h2 class="fw-bold text-dark mb-4">About Cinema Scale</h2>
+                        <h2 class="fw-bold mb-4">About Cinema Scale</h2>
                         <p class="text-muted leading-relaxed mb-3">
                             Cinema Scale is a next-generation platform designed specifically for movie enthusiasts who seek smart, customized viewing recommendations. Our robust core architecture provides instant discovery of popular movies, classics, and niche cinema.
                         </p>
@@ -285,7 +249,7 @@
                                         <i class="bi bi-cpu fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold text-dark">AI-powered Recommendations</h5>
+                                        <h5 class="fw-bold">AI-powered Recommendations</h5>
                                         <p class="text-muted small">Algorithmically matches titles with your user interaction logs, watch history, and content tags.</p>
                                     </div>
                                 </div>
@@ -296,7 +260,7 @@
                                         <i class="bi bi-person-check fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold text-dark">Personalized Suggestions</h5>
+                                        <h5 class="fw-bold">Personalized Suggestions</h5>
                                         <p class="text-muted small">Tailor metrics individually to ignore disliked themes and focus directly on favored cinematic styles.</p>
                                     </div>
                                 </div>
@@ -307,7 +271,7 @@
                                         <i class="bi bi-tags fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold text-dark">Search by Genre</h5>
+                                        <h5 class="fw-bold">Search by Genre</h5>
                                         <p class="text-muted small">Multi-layered taxonomical structure helps search for cross-genre movies (e.g. Comedy Horror).</p>
                                     </div>
                                 </div>
@@ -318,7 +282,7 @@
                                         <i class="bi bi-bar-chart-line fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold text-dark">Ratings and Analytics</h5>
+                                        <h5 class="fw-bold">Ratings and Analytics</h5>
                                         <p class="text-muted small">In-depth mathematical scores representing IMDb metrics, critic feedback, and local sentiment indexes.</p>
                                     </div>
                                 </div>
@@ -329,7 +293,7 @@
                                         <i class="bi bi-compass fs-4"></i>
                                     </div>
                                     <div>
-                                        <h5 class="fw-bold text-dark">Movie Discovery</h5>
+                                        <h5 class="fw-bold">Movie Discovery</h5>
                                         <p class="text-muted small">Find rare indie titles and hidden classic masterworks with our specialized discovery algorithms.</p>
                                     </div>
                                 </div>
@@ -341,65 +305,65 @@
         </section>
 
         <!-- G. FEATURES SECTION -->
-        <section class="features-section py-5 bg-white border-top border-bottom border-light" id="features-section">
+        <section class="features-section py-5" id="features-section">
             <div class="container py-3">
                 <div class="text-center mb-5">
-                    <h2 class="fw-bold text-dark">Interactive Features</h2>
+                    <h2 class="fw-bold">Interactive Features</h2>
                     <p class="text-muted">Explore the functional modules of the Cinema Scale platform</p>
                 </div>
                 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="features-grid">
                     <div class="col">
-                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                        <div class="card h-100 border-0 p-4 shadow-sm">
                             <div class="text-primary mb-3">
                                 <i class="bi bi-stars display-5"></i>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Personalized Recommendations</h4>
+                            <h4 class="fw-bold mb-2">Personalized Recommendations</h4>
                             <p class="text-muted mb-0 small">Get bespoke movie suggestions dynamically tailored to match your specific streaming tastes and review records.</p>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                        <div class="card h-100 border-0 p-4 shadow-sm">
                             <div class="text-primary mb-3">
                                 <i class="bi bi-pie-chart display-5"></i>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Movie Analytics</h4>
+                            <h4 class="fw-bold mb-2">Movie Analytics</h4>
                             <p class="text-muted mb-0 small">Analyze visual, demographic, and statistical trends across millions of ratings to understand performance ratings.</p>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                        <div class="card h-100 border-0 p-4 shadow-sm">
                             <div class="text-primary mb-3">
                                 <i class="bi bi-lightning-charge display-5"></i>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Fast Search</h4>
+                            <h4 class="fw-bold mb-2">Fast Search</h4>
                             <p class="text-muted mb-0 small">Leverage low-latency searching architecture to query multi-criteria categories instantly without loading delays.</p>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                        <div class="card h-100 border-0 p-4 shadow-sm">
                             <div class="text-primary mb-3">
                                 <i class="bi bi-speedometer2 display-5"></i>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Admin Dashboard</h4>
+                            <h4 class="fw-bold mb-2">Admin Dashboard</h4>
                             <p class="text-muted mb-0 small">Empower administrators to curate catalogs, audit customer records, and review feedback reports systematically.</p>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                        <div class="card h-100 border-0 p-4 shadow-sm">
                             <div class="text-primary mb-3">
                                 <i class="bi bi-heart display-5"></i>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Like & Save Movies</h4>
+                            <h4 class="fw-bold mb-2">Like & Save Movies</h4>
                             <p class="text-muted mb-0 small">Build your personal watchlist by liking and saving movies. Your profile keeps track of all your favorites.</p>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card h-100 border-0 bg-light p-4 shadow-sm">
+                        <div class="card h-100 border-0 p-4 shadow-sm">
                             <div class="text-primary mb-3">
                                 <i class="bi bi-phone display-5"></i>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Responsive Design</h4>
+                            <h4 class="fw-bold mb-2">Responsive Design</h4>
                             <p class="text-muted mb-0 small">Optimized rendering structure that dynamically adjusts across smartphones, tablets, and large displays.</p>
                         </div>
                     </div>
@@ -408,10 +372,10 @@
         </section>
 
         <!-- H. DEVELOPER TEAM SECTION -->
-        <section class="developers-section py-5 bg-light" id="developers-section">
+        <section class="developers-section py-5" id="developers-section">
             <div class="container py-3">
                 <div class="text-center mb-5">
-                    <h2 class="fw-bold text-dark">Our Engineering Team</h2>
+                    <h2 class="fw-bold">Our Engineering Team</h2>
                     <p class="text-muted">Meet the senior frontend and backend minds behind Cinema Scale</p>
                 </div>
                 
@@ -424,8 +388,8 @@
                                 <rect width="100%" height="100%" fill="#6c757d"/>
                                 <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">N</text>
                             </svg>
-                            <h5 class="fw-bold text-dark mb-1">Nikhil</h5>
-                            <p class="text-primary small mb-3">Lead System Architect</p>
+                            <h5 class="fw-bold mb-1">Nikhil</h5>
+                            <p class="small mb-3" style="color: var(--accent-purple);">Lead System Architect</p>
                             <div class="d-flex justify-content-center gap-2 mt-auto">
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Nikhil's Github"><i class="bi bi-github"></i></a>
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Nikhil's LinkedIn"><i class="bi bi-linkedin"></i></a>
@@ -441,8 +405,8 @@
                                 <rect width="100%" height="100%" fill="#6c757d"/>
                                 <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">S</text>
                             </svg>
-                            <h5 class="fw-bold text-dark mb-1">Satkar</h5>
-                            <p class="text-primary small mb-3">UI/UX Specialist</p>
+                            <h5 class="fw-bold mb-1">Satkar</h5>
+                            <p class="small mb-3" style="color: var(--accent-purple);">UI/UX Specialist</p>
                             <div class="d-flex justify-content-center gap-2 mt-auto">
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Satkar's Github"><i class="bi bi-github"></i></a>
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Satkar's LinkedIn"><i class="bi bi-linkedin"></i></a>
@@ -458,8 +422,8 @@
                                 <rect width="100%" height="100%" fill="#6c757d"/>
                                 <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">D</text>
                             </svg>
-                            <h5 class="fw-bold text-dark mb-1">Diya</h5>
-                            <p class="text-primary small mb-3">Data Scientist</p>
+                            <h5 class="fw-bold mb-1">Diya</h5>
+                            <p class="small mb-3" style="color: var(--accent-purple);">Data Scientist</p>
                             <div class="d-flex justify-content-center gap-2 mt-auto">
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Diya's Github"><i class="bi bi-github"></i></a>
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Diya's LinkedIn"><i class="bi bi-linkedin"></i></a>
@@ -475,8 +439,8 @@
                                 <rect width="100%" height="100%" fill="#6c757d"/>
                                 <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">D</text>
                             </svg>
-                            <h5 class="fw-bold text-dark mb-1">Deepika</h5>
-                            <p class="text-primary small mb-3">Backend Engineer</p>
+                            <h5 class="fw-bold mb-1">Deepika</h5>
+                            <p class="small mb-3" style="color: var(--accent-purple);">Backend Engineer</p>
                             <div class="d-flex justify-content-center gap-2 mt-auto">
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Deepika's Github"><i class="bi bi-github"></i></a>
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Deepika's LinkedIn"><i class="bi bi-linkedin"></i></a>
@@ -492,8 +456,8 @@
                                 <rect width="100%" height="100%" fill="#6c757d"/>
                                 <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">K</text>
                             </svg>
-                            <h5 class="fw-bold text-dark mb-1">Kritika</h5>
-                            <p class="text-primary small mb-3">QA & Testing Lead</p>
+                            <h5 class="fw-bold mb-1">Kritika</h5>
+                            <p class="small mb-3" style="color: var(--accent-purple);">QA & Testing Lead</p>
                             <div class="d-flex justify-content-center gap-2 mt-auto">
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Kritika's Github"><i class="bi bi-github"></i></a>
                                 <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" aria-label="Kritika's LinkedIn"><i class="bi bi-linkedin"></i></a>
@@ -504,60 +468,4 @@
             </div>
         </section>
 
-    </main>
-
-    <!-- I. FOOTER SECTION -->
-    <footer class="bg-dark text-light py-5 mt-auto border-top border-secondary" id="footer-section">
-        <div class="container">
-            <div class="row g-4 mb-4">
-                <div class="col-lg-4 col-md-6" id="footer-brand-col">
-                    <h5 class="fw-bold text-white mb-3"><i class="bi bi-film me-2 text-primary"></i>Cinema Scale</h5>
-                    <p class="text-secondary small">
-                        Cinema Scale provides analytical film suggestions and custom indexing vectors to curate the ultimate watching logs. Explore movies, analyze metrics, and discover reviews.
-                    </p>
-                </div>
-                <div class="col-lg-2 col-md-6" id="footer-links-col">
-                    <h5 class="fw-bold text-white mb-3">Quick Links</h5>
-                    <ul class="list-unstyled text-secondary small">
-                        <li class="mb-2"><a href="{{ url_for('index') }}" class="text-secondary text-decoration-none hover-link">Home</a></li>
-                        <li class="mb-2"><a href="{{ url_for('index') }}#search-section" class="text-secondary text-decoration-none hover-link">Movies</a></li>
-                        <li class="mb-2"><a href="{{ url_for('index') }}#recommendations-categories" class="text-secondary text-decoration-none hover-link">Recommendations</a></li>
-                        <li class="mb-2"><a href="{{ url_for('index') }}#about-section" class="text-secondary text-decoration-none hover-link">About Us</a></li>
-                        <li class="mb-2"><a href="{{ url_for('index') }}#developers-section" class="text-secondary text-decoration-none hover-link">Developers</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6" id="footer-contact-col">
-                    <h5 class="fw-bold text-white mb-3">Contact Support</h5>
-                    <ul class="list-unstyled text-secondary small">
-                        <li class="mb-2"><i class="bi bi-envelope-at me-2 text-primary"></i>support@cinemascale.com</li>
-                        <li class="mb-2"><i class="bi bi-telephone me-2 text-primary"></i>+1 (555) 019-2834</li>
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>University Tech Park, Suite 405</li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6" id="footer-social-col">
-                    <h5 class="fw-bold text-white mb-3">Follow Cinema Scale</h5>
-                    <p class="text-secondary small mb-3">Stay updated with the latest releases and developer updates.</p>
-                    <div class="d-flex gap-2" id="footer-social-links">
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Twitter/X"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-top border-secondary pt-4 mt-4 text-center">
-                <p class="text-secondary small mb-0" id="footer-copyright">
-                    &copy; 2026 Cinema Scale. All Rights Reserved. Built with <i class="bi bi-heart-fill text-danger mx-1"></i> by Nikhil, Satkar, Diya, Deepika, and Kritika.
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap 5 JavaScript Bundle CDN (Includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
-    <!-- Local Javascript File -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+{% endblock %}

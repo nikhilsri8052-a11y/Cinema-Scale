@@ -1,28 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinema Scale - Admin Dashboard</title>
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Administration panel for Cinema Scale to manage movies, view user analytics, and audit system logs.">
-    <meta name="robots" content="noindex, nofollow">
-    
-    <!-- Bootstrap 5 CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
-    <!-- Bootstrap Icons CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    <!-- Local Stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="bg-light d-flex flex-column min-vh-100">
+{% extends "base.html" %}
 
+{% block title %}Cinema Scale - Admin Dashboard{% endblock %}
+{% block meta_description %}Administration panel for Cinema Scale to manage movies, view user analytics, and audit system logs.{% endblock %}
+{% block extra_meta %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+
+{# Override default navbar with admin header #}
+{% block navbar %}
     <!-- TOP HEADER / ADMINISTRATIVE NAVIGATION -->
-    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <header class="navbar sticky-top flex-md-nowrap p-0 shadow admin-header">
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-4 fw-bold" href="{{ url_for('index') }}" id="admin-logo">
-            <i class="bi bi-film text-primary me-2"></i>Cinema Scale
+            <i class="bi bi-film me-2" style="color: var(--accent-purple);"></i>Cinema Scale
         </a>
         
         <button class="navbar-toggler position-absolute d-md-none collapsed start-100 translate-middle-x mt-1 me-3 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,12 +17,12 @@
         </button>
         
         <div class="w-100" id="header-search-container">
-            <input class="form-control form-control-dark w-100 rounded-0 border-0 bg-secondary-subtle px-3 py-2" type="text" placeholder="Search movies, users..." aria-label="Search" id="admin-search-input">
+            <input class="form-control w-100 rounded-0 border-0 px-3 py-2" type="text" placeholder="Search movies, users..." aria-label="Search" id="admin-search-input">
         </div>
         
         <div class="navbar-nav flex-row align-items-center px-3 gap-3" id="admin-header-actions">
             <div class="nav-item dropdown" id="profile-placeholder">
-                <a class="nav-link dropdown-toggle text-white d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg class="bd-placeholder-img rounded-circle" width="30" height="30" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Profile Avatar" preserveAspectRatio="xMidYMid slice" focusable="false">
                         <rect width="100%" height="100%" fill="#0d6efd"/>
                         <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle" font-size="12" font-weight="bold">AD</text>
@@ -51,36 +38,39 @@
             </div>
         </div>
     </header>
+{% endblock %}
 
+{# Override default content structure with admin sidebar + main layout #}
+{% block content %}
     <!-- DASHBOARD LAYOUT GRID CONTAINER -->
     <div class="container-fluid flex-grow-1 d-flex flex-column">
         <div class="row flex-grow-1">
             
             <!-- SIDEBAR NAVIGATION MENU -->
-            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse text-light py-3 border-end border-secondary">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse py-3">
                 <div class="position-sticky pt-2">
                     <ul class="nav flex-column gap-2" id="sidebar-links">
                         <li class="nav-item">
-                            <a class="nav-link active text-white bg-primary rounded-2 py-2 px-3 d-flex align-items-center gap-2" aria-current="page" href="#" id="sidebar-dashboard">
+                            <a class="nav-link active rounded-2 py-2 px-3 d-flex align-items-center gap-2" aria-current="page" href="#" id="sidebar-dashboard" style="background: var(--accent-gradient); color: #fff !important;">
                                 <i class="bi bi-speedometer2"></i> Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#movie-management-section" id="sidebar-movies">
+                            <a class="nav-link rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#movie-management-section" id="sidebar-movies">
                                 <i class="bi bi-film"></i> Manage Movies
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#user-management-section" id="sidebar-users">
+                            <a class="nav-link rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#user-management-section" id="sidebar-users">
                                 <i class="bi bi-people"></i> Users
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-secondary-emphasis rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#admin-analytics-section" id="sidebar-analytics">
+                            <a class="nav-link rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="#admin-analytics-section" id="sidebar-analytics">
                                 <i class="bi bi-graph-up-arrow"></i> Analytics
                             </a>
                         </li>
-                        <li class="nav-item mt-4 border-top border-secondary pt-3">
+                        <li class="nav-item mt-4 border-top pt-3">
                             <a class="nav-link text-danger rounded-2 py-2 px-3 d-flex align-items-center gap-2" href="{{ url_for('logout') }}" id="sidebar-logout">
                                 <i class="bi bi-box-arrow-left"></i> Logout
                             </a>
@@ -94,7 +84,7 @@
                 
                 <!-- Section Header -->
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom" id="dashboard-title-row">
-                    <h1 class="h2 fw-bold text-dark" id="admin-dashboard-title">Admin Control Panel</h1>
+                    <h1 class="h2 fw-bold" id="admin-dashboard-title">Admin Control Panel</h1>
                     <div class="btn-toolbar mb-2 mb-md-0" id="admin-dashboard-toolbar">
                         <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary me-2">
                             <i class="bi bi-house me-1"></i>View Site
@@ -113,40 +103,40 @@
                 <!-- STATISTICS CARDS ROW — REAL DATA -->
                 <section class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4" id="dashboard-stats-section">
                     <div class="col">
-                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                        <div class="card border-0 p-3 shadow-sm h-100 rounded-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <h6 class="text-muted small uppercase mb-1">Total Registered Users</h6>
-                                    <span class="fs-3 fw-bold text-dark" id="stat-registered-users">{{ user_count }}</span>
+                                    <span class="fs-3 fw-bold" id="stat-registered-users">{{ user_count }}</span>
                                 </div>
                                 <span class="bg-primary-subtle text-primary rounded p-3"><i class="bi bi-people-fill fs-4"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                        <div class="card border-0 p-3 shadow-sm h-100 rounded-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <h6 class="text-muted small uppercase mb-1">Total Movies Indexed</h6>
-                                    <span class="fs-3 fw-bold text-dark" id="stat-total-movies">{{ movie_count }}</span>
+                                    <span class="fs-3 fw-bold" id="stat-total-movies">{{ movie_count }}</span>
                                 </div>
                                 <span class="bg-success-subtle text-success rounded p-3"><i class="bi bi-film fs-4"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                        <div class="card border-0 p-3 shadow-sm h-100 rounded-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <h6 class="text-muted small uppercase mb-1">Total Reviews</h6>
-                                    <span class="fs-3 fw-bold text-dark" id="stat-reviews-count">{{ review_count }}</span>
+                                    <span class="fs-3 fw-bold" id="stat-reviews-count">{{ review_count }}</span>
                                 </div>
                                 <span class="bg-info-subtle text-info rounded p-3"><i class="bi bi-chat-dots-fill fs-4"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="card border-0 bg-white p-3 shadow-sm h-100 rounded-3">
+                        <div class="card border-0 p-3 shadow-sm h-100 rounded-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <h6 class="text-muted small uppercase mb-1">System Status</h6>
@@ -159,8 +149,8 @@
                 </section>
 
                 <!-- USER MANAGEMENT SECTION — REAL DATA -->
-                <section class="card border-0 shadow-sm p-4 bg-white rounded-3 mb-4" id="user-management-section">
-                    <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-people me-2 text-primary"></i>User Management</h3>
+                <section class="card border-0 shadow-sm p-4 rounded-3 mb-4" id="user-management-section">
+                    <h3 class="h5 fw-bold mb-3"><i class="bi bi-people me-2 text-primary"></i>User Management</h3>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle" id="user-management-table">
                             <thead class="table-light">
@@ -176,7 +166,7 @@
                                 {% for u in users %}
                                 <tr>
                                     <td class="small">#{{ u.id }}</td>
-                                    <td><span class="fw-bold text-dark">{{ u.username }}</span></td>
+                                    <td><span class="fw-bold">{{ u.username }}</span></td>
                                     <td class="small">{{ u.email }}</td>
                                     <td class="text-center">
                                         {% if u.is_admin %}
@@ -207,8 +197,8 @@
                 <section class="row g-4 mb-4" id="movie-management-section">
                     <!-- Left: Movie Table Card -->
                     <div class="col-xl-8" id="movie-table-card-col">
-                        <div class="card border-0 shadow-sm p-4 h-100 bg-white rounded-3">
-                            <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-table me-2 text-primary"></i>Movie Database Management</h3>
+                        <div class="card border-0 shadow-sm p-4 h-100 rounded-3">
+                            <h3 class="h5 fw-bold mb-3"><i class="bi bi-table me-2 text-primary"></i>Movie Database Management</h3>
                             <p class="text-muted small mb-3">Showing latest 50 movies. Total: {{ movie_count }} movies in database.</p>
                             
                             <div class="table-responsive">
@@ -228,10 +218,10 @@
                                         <tr>
                                             <td class="small">#{{ m.id }}</td>
                                             <td>
-                                                <a href="{{ url_for('movie_detail', movie_id=m.id) }}" class="fw-bold text-dark text-decoration-none text-truncate d-inline-block" style="max-width: 200px;">{{ m.title }}</a>
+                                                <a href="{{ url_for('movie_detail', movie_id=m.id) }}" class="fw-bold text-decoration-none text-truncate d-inline-block" style="max-width: 200px;">{{ m.title }}</a>
                                             </td>
                                             <td>
-                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ m.genre|truncate(20) }}</span>
+                                                <span class="badge bg-secondary-subtle">{{ m.genre|truncate(20) }}</span>
                                             </td>
                                             <td class="text-center small">{{ m.year }}</td>
                                             <td class="text-center"><span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>{{ m.rating }}</span></td>
@@ -252,8 +242,8 @@
 
                     <!-- Right: Add Movie Form Card -->
                     <div class="col-xl-4" id="add-movie-form-col">
-                        <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
-                            <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-plus-square me-2 text-primary"></i>Add New Movie</h3>
+                        <div class="card border-0 shadow-sm p-4 rounded-3 h-100">
+                            <h3 class="h5 fw-bold mb-3"><i class="bi bi-plus-square me-2 text-primary"></i>Add New Movie</h3>
                             
                             <form id="add-movie-form" method="post" action="{{ url_for('admin') }}">
                                 <div class="mb-2">
@@ -293,32 +283,32 @@
                 </section>
 
                 <!-- ANALYTICS SECTION -->
-                <section class="py-4 bg-white border rounded-3 p-4 shadow-sm mb-4" id="admin-analytics-section">
-                    <h3 class="h5 fw-bold text-dark mb-4"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>System Analytics & Charts</h3>
+                <section class="py-4 border rounded-3 p-4 shadow-sm mb-4" id="admin-analytics-section" style="background: var(--glass-bg);">
+                    <h3 class="h5 fw-bold mb-4"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>System Analytics & Charts</h3>
                     
                     <div class="row row-cols-1 row-cols-lg-3 g-3">
                         <div class="col">
-                            <div class="card border border-light p-3 bg-light h-100 rounded-3">
-                                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-bar-chart me-1 text-primary"></i>Movie Rating Distribution</h6>
-                                <div class="ratio ratio-16x9 bg-white border rounded p-1" id="movie-chart-container">
+                            <div class="card border p-3 h-100 rounded-3">
+                                <h6 class="fw-bold mb-2"><i class="bi bi-bar-chart me-1 text-primary"></i>Movie Rating Distribution</h6>
+                                <div class="ratio ratio-16x9 border rounded p-1" id="movie-chart-container">
                                     <canvas id="movieChart" aria-label="Movie ratings chart" role="img"></canvas>
                                 </div>
                                 <span class="small text-muted text-center mt-2 d-block">Rating counts by category</span>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card border border-light p-3 bg-light h-100 rounded-3">
-                                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-pie-chart me-1 text-primary"></i>Genre Popularity Analytics</h6>
-                                <div class="ratio ratio-16x9 bg-white border rounded p-1" id="genre-chart-container">
+                            <div class="card border p-3 h-100 rounded-3">
+                                <h6 class="fw-bold mb-2"><i class="bi bi-pie-chart me-1 text-primary"></i>Genre Popularity Analytics</h6>
+                                <div class="ratio ratio-16x9 border rounded p-1" id="genre-chart-container">
                                     <canvas id="genreChart" aria-label="Genre popularity chart" role="img"></canvas>
                                 </div>
                                 <span class="small text-muted text-center mt-2 d-block">User interest mapping</span>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card border border-light p-3 bg-light h-100 rounded-3">
-                                <h6 class="fw-bold text-dark mb-2"><i class="bi bi-activity me-1 text-primary"></i>User Activity Analytics</h6>
-                                <div class="ratio ratio-16x9 bg-white border rounded p-1" id="user-chart-container">
+                            <div class="card border p-3 h-100 rounded-3">
+                                <h6 class="fw-bold mb-2"><i class="bi bi-activity me-1 text-primary"></i>User Activity Analytics</h6>
+                                <div class="ratio ratio-16x9 border rounded p-1" id="user-chart-container">
                                     <canvas id="userChart" aria-label="User registrations chart" role="img"></canvas>
                                 </div>
                                 <span class="small text-muted text-center mt-2 d-block">Daily user sessions tracking</span>
@@ -330,23 +320,19 @@
             </main>
         </div>
     </div>
+{% endblock %}
 
+{# Override default footer with admin-specific footer #}
+{% block footer %}
     <!-- ADMIN DASHBOARD FOOTER -->
-    <footer class="bg-dark text-light py-4 mt-auto border-top border-secondary" id="admin-footer-section">
+    <footer class="admin-footer py-4 mt-auto" id="admin-footer-section">
         <div class="container-fluid px-4">
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
                 <span class="text-secondary small">&copy; 2026 Cinema Scale - Admin Portal.</span>
                 <div class="d-flex gap-3 small" id="admin-footer-links">
-                    <a href="{{ url_for('index') }}" class="text-secondary text-decoration-none hover-link">Main Site</a>
+                    <a href="{{ url_for('index') }}" class="text-secondary text-decoration-none">Main Site</a>
                 </div>
             </div>
         </div>
     </footer>
-
-    <!-- Bootstrap 5 JavaScript Bundle CDN (Includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
-    <!-- Local Javascript File -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+{% endblock %}

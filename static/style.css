@@ -32,6 +32,7 @@
     --gold-gradient: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
     
     --glass-bg: rgba(21, 24, 36, 0.65);
+    --glass-bg-strong: rgba(21, 24, 36, 0.82);
     --glass-border: rgba(255, 255, 255, 0.1);
     
     --shadow-glow: 0 0 15px rgba(255, 204, 0, 0.25);
@@ -39,11 +40,20 @@
     --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
     
     --font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+
+    --blob-1: #8a2be2;
+    --blob-2: #ff007f;
+    --blob-opacity: 0.35;
+
+    --section-bg: rgba(21, 24, 36, 0.55);
+    --section-bg-alt: rgba(13, 14, 21, 0.6);
+    --footer-bg: rgba(13, 14, 21, 0.85);
+    --navbar-bg: rgba(21, 24, 36, 0.75);
 }
 
 body.light-theme {
     /* Light Mode */
-    --bg-main: #f7f9fc;
+    --bg-main: #f0f2f8;
     --bg-card: #ffffff;
     --bg-card-hover: #f1f5f9;
     --text-primary: #0f172a;
@@ -54,7 +64,7 @@ body.light-theme {
     --accent-purple-rgb: 0, 180, 216;
     --accent-gold-rgb: 255, 107, 107;
     
-    --border-color: rgba(15, 23, 42, 0.08);
+    --border-color: rgba(15, 23, 42, 0.1);
     --border-hover: rgba(0, 180, 216, 0.3);
     --input-bg: #ffffff;
     
@@ -63,11 +73,21 @@ body.light-theme {
     --gold-gradient: linear-gradient(135deg, #ffd166 0%, #ff9f43 100%);
     
     --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-bg-strong: rgba(255, 255, 255, 0.85);
     --glass-border: rgba(0, 0, 0, 0.06);
     
     --shadow-glow: 0 0 15px rgba(0, 180, 216, 0.15);
     --shadow-purple-glow: 0 0 20px rgba(255, 107, 107, 0.15);
     --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.08);
+
+    --blob-1: #00b4d8;
+    --blob-2: #ff6b6b;
+    --blob-opacity: 0.18;
+
+    --section-bg: rgba(255, 255, 255, 0.6);
+    --section-bg-alt: rgba(240, 242, 248, 0.65);
+    --footer-bg: rgba(15, 23, 42, 0.92);
+    --navbar-bg: rgba(255, 255, 255, 0.72);
 }
 
 /* ==========================================
@@ -83,6 +103,46 @@ body {
     background-color: var(--bg-main) !important;
     color: var(--text-primary) !important;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* ---- Global Animated Blob Background ---- */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(130px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--blob-opacity);
+}
+body::before {
+    background: var(--blob-1);
+    top: -5%;
+    left: 5%;
+    animation: floatBlob 18s infinite alternate ease-in-out;
+}
+body::after {
+    background: var(--blob-2);
+    bottom: -5%;
+    right: 5%;
+    animation: floatBlob 18s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(60px, 40px) scale(1.15); }
+    66% { transform: translate(-30px, 80px) scale(1.05); }
+    100% { transform: translate(80px, 60px) scale(1.25); }
+}
+
+/* Ensure all content sits above the blobs */
+body > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* Smooth Scrolling */
@@ -116,8 +176,24 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
 }
 
+p, span, li, td, th, label, a {
+    color: var(--text-primary);
+}
+
 .text-muted, .text-secondary, .text-secondary-emphasis {
     color: var(--text-secondary) !important;
+}
+
+.text-dark {
+    color: var(--text-primary) !important;
+}
+
+.text-white {
+    color: var(--text-primary) !important;
+}
+
+.text-light {
+    color: var(--text-primary) !important;
 }
 
 /* Buttons */
@@ -163,6 +239,16 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--accent-gold) !important;
 }
 
+.btn-outline-secondary {
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+.btn-outline-secondary:hover {
+    border-color: var(--accent-purple) !important;
+    color: var(--accent-purple) !important;
+    background-color: rgba(var(--accent-purple-rgb), 0.1) !important;
+}
+
 /* Cards global styling */
 .card {
     background-color: var(--bg-card) !important;
@@ -170,6 +256,8 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary) !important;
     border-radius: 12px;
     box-shadow: var(--shadow-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* Form Inputs */
@@ -199,27 +287,117 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--accent-purple);
 }
 
-/* Header & Navbar Adaptation */
-header .navbar {
+/* Alerts */
+.alert {
     background-color: var(--bg-card) !important;
-    border-bottom: 1px solid var(--border-color);
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
 }
-header .nav-link {
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    border-color: rgba(220, 53, 69, 0.3) !important;
+    color: #ff6b6b !important;
+}
+.alert-info {
+    background-color: rgba(var(--accent-purple-rgb), 0.1) !important;
+    border-color: rgba(var(--accent-purple-rgb), 0.2) !important;
+    color: var(--accent-purple) !important;
+}
+.alert-light {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
     color: var(--text-secondary) !important;
-    font-weight: 500;
-}
-header .nav-link:hover, header .nav-link.active {
-    color: var(--accent-gold) !important;
 }
 
-/* Footer Adaptation */
-footer {
-    background-color: var(--bg-main) !important;
-    border-top: 1px solid var(--border-color) !important;
+/* Tables */
+.table {
+    color: var(--text-primary) !important;
+}
+.table-hover > tbody > tr:hover {
+    background-color: var(--bg-card-hover) !important;
+    color: var(--text-primary) !important;
+}
+.table-light {
+    background-color: var(--section-bg) !important;
+}
+.table-light th {
+    color: var(--text-secondary) !important;
 }
 
 /* ==========================================
-   4. Theme Switcher Trigger (Floating Button)
+   4. Navbar — Glassmorphism
+   ========================================== */
+
+.cs-navbar {
+    background: var(--navbar-bg) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+}
+.cs-navbar .navbar-brand {
+    color: var(--text-primary) !important;
+}
+.cs-navbar .navbar-brand i {
+    color: var(--accent-purple) !important;
+}
+.cs-navbar .nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+.cs-navbar .nav-link:hover,
+.cs-navbar .nav-link.active {
+    color: var(--accent-gold) !important;
+}
+.cs-navbar .navbar-toggler {
+    border-color: var(--border-color) !important;
+}
+.cs-navbar .navbar-toggler-icon {
+    filter: var(--text-primary) == '#ffffff' ? none : invert(1);
+}
+/* Fix toggler icon for light mode */
+body.light-theme .cs-navbar .navbar-toggler-icon {
+    filter: invert(0.5);
+}
+
+/* ==========================================
+   5. Footer — Glassmorphism
+   ========================================== */
+
+.cs-footer {
+    background: var(--footer-bg) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-top: 1px solid var(--glass-border) !important;
+}
+.cs-footer h5 {
+    color: var(--text-primary) !important;
+}
+.cs-footer .footer-link {
+    color: var(--text-secondary) !important;
+    transition: color 0.2s ease;
+}
+.cs-footer .footer-link:hover {
+    color: var(--accent-gold) !important;
+}
+.cs-footer .cs-accent-icon {
+    color: var(--accent-purple) !important;
+}
+.cs-footer .footer-divider {
+    border-top: 1px solid var(--border-color);
+}
+.cs-footer .btn-outline-secondary {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+.cs-footer .btn-outline-secondary:hover {
+    color: var(--accent-gold) !important;
+    border-color: var(--accent-gold) !important;
+    background-color: rgba(var(--accent-gold-rgb), 0.1) !important;
+}
+
+/* ==========================================
+   6. Theme Switcher Trigger (Floating Button)
    ========================================== */
 
 .theme-toggle {
@@ -247,71 +425,135 @@ footer {
 }
 
 /* ==========================================
-   5. Home Page Details (index.html)
+   7. Section Backgrounds — Glassmorphism
+   ========================================== */
+
+.cs-section {
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+}
+.cs-section-alt {
+    background: var(--section-bg-alt) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* ==========================================
+   8. Home Page — Hero Section
    ========================================== */
 
 /* Hero Section */
 .hero-section {
-    background-color: var(--bg-main) !important;
-    border-bottom: 1px solid var(--border-color) !important;
+    background: var(--section-bg-alt) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-/* Movie Animation Placeholder styling */
-.movie-animation-placeholder {
+/* ---- Movie Reel Animation ---- */
+.movie-reel-container {
     position: relative;
-    border: none !important;
-    background: linear-gradient(135deg, rgba(13, 14, 21, 0.95), rgba(21, 24, 36, 0.95)) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), var(--shadow-purple-glow);
+    width: 100%;
+    height: 480px;
     overflow: hidden;
-}
-.movie-animation-placeholder::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-        from 180deg,
-        transparent 0%,
-        var(--accent-purple) 25%,
-        transparent 50%,
-        var(--accent-gold) 75%,
-        transparent 100%
-    );
-    animation: rotateGlow 8s linear infinite;
-    z-index: 1;
-    opacity: 0.4;
-}
-.movie-animation-placeholder::after {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    right: 3px;
-    bottom: 3px;
-    background: var(--bg-card) !important;
-    border-radius: 12px;
-    z-index: 2;
-}
-.movie-animation-placeholder > * {
-    position: relative;
-    z-index: 3;
-}
-.movie-animation-placeholder i.display-2 {
-    color: var(--accent-gold) !important;
-    text-shadow: var(--shadow-glow);
-    animation: pulseIcon 2s infinite ease-in-out;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--shadow-purple-glow);
 }
 
-@keyframes rotateGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Gradient overlays top & bottom for fade effect */
+.movie-reel-container::before,
+.movie-reel-container::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 100px;
+    z-index: 10;
+    pointer-events: none;
 }
-@keyframes pulseIcon {
-    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(var(--accent-gold-rgb), 0.3)); }
-    50% { transform: scale(1.08); filter: drop-shadow(0 0 15px rgba(var(--accent-gold-rgb), 0.7)); }
+.movie-reel-container::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--bg-main) 0%, transparent 100%);
 }
+.movie-reel-container::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--bg-main) 0%, transparent 100%);
+}
+
+body.light-theme .movie-reel-container::before {
+    background: linear-gradient(to bottom, var(--bg-main) 0%, transparent 100%);
+}
+body.light-theme .movie-reel-container::after {
+    background: linear-gradient(to top, var(--bg-main) 0%, transparent 100%);
+}
+
+.movie-reel-tracks {
+    display: flex;
+    gap: 12px;
+    height: 100%;
+    padding: 0 12px;
+}
+
+.movie-reel-track {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Scrolling up (default) */
+.movie-reel-track--up {
+    animation: reelScrollUp 25s linear infinite;
+}
+
+/* Scrolling down */
+.movie-reel-track--down {
+    animation: reelScrollDown 25s linear infinite;
+}
+
+.movie-reel-track:hover {
+    animation-play-state: paused;
+}
+
+.movie-reel-poster {
+    flex-shrink: 0;
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease;
+}
+.movie-reel-poster:hover {
+    transform: scale(1.05);
+    border-color: var(--accent-gold) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+    z-index: 20;
+}
+.movie-reel-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@keyframes reelScrollUp {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+@keyframes reelScrollDown {
+    0% { transform: translateY(-50%); }
+    100% { transform: translateY(0); }
+}
+
+/* ==========================================
+   9. Home Page — Other Sections
+   ========================================== */
 
 /* Movie Card Zoom & Glowing Border on Hover */
 .movie-card, .trending-movies .card, .category-group .card {
@@ -326,13 +568,16 @@ footer {
 
 /* Search Bar customization */
 .search-section {
-    background-color: var(--bg-card) !important;
-    border-bottom: 1px solid var(--border-color);
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
 }
 .search-section .input-group {
     border: 1px solid var(--border-color) !important;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     border-radius: 50px !important;
+    background: var(--input-bg) !important;
 }
 .search-section .input-group:focus-within {
     border-color: var(--accent-gold) !important;
@@ -342,6 +587,7 @@ footer {
     background-color: var(--input-bg) !important;
     border: none !important;
     padding-left: 20px;
+    color: var(--text-secondary) !important;
 }
 .search-section #search-input {
     border: none !important;
@@ -354,8 +600,50 @@ footer {
     padding-right: 30px;
 }
 
+/* Trending section */
+.trending-movies {
+    background: var(--section-bg-alt) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Recommendations section */
+.recommendations-categories {
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* About section */
+.about-section {
+    background: var(--section-bg-alt) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Features section */
+.features-section {
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+}
+.features-section .card {
+    background: var(--glass-bg) !important;
+}
+
+/* Developers section */
+.developers-section {
+    background: var(--section-bg-alt) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
 /* ==========================================
-   6. Movie Profile Page (movie_info.html)
+   10. Movie Profile Page (movie_info.html)
    ========================================== */
 
 /* Typography and Layout Details */
@@ -364,12 +652,49 @@ footer {
     line-height: 1.15;
 }
 
+/* Movie header section */
+.movie-header-section {
+    background: var(--section-bg-alt) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
 /* Sleek Container for Canvas */
 #canvas-container {
     background-color: var(--bg-card) !important;
     border: 1px solid var(--border-color) !important;
     box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
+}
+
+/* Analytics section */
+.analytics-section {
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+}
+.analytics-section .card {
+    background: var(--glass-bg) !important;
+}
+
+/* Similar movies section */
+.similar-movies-section {
+    background: var(--section-bg-alt) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Reviews section */
+.reviews-section {
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+}
+.reviews-section .card {
+    background: var(--glass-bg) !important;
 }
 
 /* Recommendations Grid Cards spacing and layout */
@@ -381,52 +706,12 @@ footer {
 }
 
 /* ==========================================
-   7. Authentication Page (auth.html)
+   11. Authentication Page (auth.html)
    ========================================== */
 
-/* Blurred Background Blobs for Glassmorphism Context */
+/* Auth main area inherits body blobs automatically now */
 #auth-main {
     position: relative;
-    overflow: hidden;
-    background-color: var(--bg-main) !important;
-}
-#auth-main::before,
-#auth-main::after {
-    content: '';
-    position: absolute;
-    width: 350px;
-    height: 350px;
-    border-radius: 50%;
-    filter: blur(120px);
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.45;
-    animation: floatBlob 15s infinite alternate ease-in-out;
-}
-#auth-main::before {
-    background: #8a2be2;
-    top: 5%;
-    left: 10%;
-}
-#auth-main::after {
-    background: #ff007f;
-    bottom: 5%;
-    right: 10%;
-    animation-delay: -7.5s;
-}
-
-body.light-theme #auth-main::before {
-    background: #00b4d8;
-    opacity: 0.25;
-}
-body.light-theme #auth-main::after {
-    background: #ff6b6b;
-    opacity: 0.25;
-}
-
-@keyframes floatBlob {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(80px, 60px) scale(1.25); }
 }
 
 /* Glassmorphism Card styling */
@@ -461,8 +746,16 @@ body.light-theme #auth-main::after {
 }
 
 /* ==========================================
-   8. Admin Page (admin.html)
+   12. Admin Page (admin.html)
    ========================================== */
+
+/* Admin navbar */
+.admin-header {
+    background: var(--navbar-bg) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+}
 
 /* Metrics Dashboard Cards Styling */
 #dashboard-stats-section .card {
@@ -546,8 +839,10 @@ body.light-theme #auth-main::after {
 
 /* Sidebar Menu Admin Custom styles */
 #sidebarMenu {
-    background-color: var(--bg-card) !important;
-    border-right: 1px solid var(--border-color);
+    background: var(--glass-bg-strong) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-right: 1px solid var(--glass-border);
 }
 #sidebarMenu .nav-link {
     color: var(--text-secondary) !important;
@@ -571,8 +866,26 @@ body.light-theme #auth-main::after {
     background-color: var(--bg-card-hover) !important;
 }
 
+/* Admin main content area */
+#admin-main-content {
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+#admin-main-content .card {
+    background: var(--glass-bg) !important;
+}
+
+/* Admin footer */
+.admin-footer {
+    background: var(--footer-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid var(--glass-border) !important;
+}
+
 /* ==========================================
-   9. Miscellaneous & Animation Tweaks
+   13. Miscellaneous & Animation Tweaks
    ========================================== */
 
 /* Badge Styling */
@@ -585,6 +898,14 @@ body.light-theme #auth-main::after {
     background: var(--gold-gradient) !important;
     color: #0d0e15 !important;
 }
+.badge.bg-secondary {
+    background-color: var(--bg-card-hover) !important;
+    color: var(--text-secondary) !important;
+}
+.badge.bg-secondary-subtle {
+    background-color: rgba(var(--accent-purple-rgb), 0.08) !important;
+    color: var(--text-secondary) !important;
+}
 
 .ratio-2x3 {
     --bs-aspect-ratio: 150%;
@@ -596,8 +917,13 @@ body.light-theme #auth-main::after {
     --bs-aspect-ratio: 56.25%;
 }
 
+/* bg-light / bg-white / bg-dark overrides for glassmorphism */
+.bg-light, .bg-white {
+    background-color: transparent !important;
+}
+
 /* ==========================================
-   10. Profile Page (profile.html)
+   14. Profile Page (profile.html)
    ========================================== */
 
 #profile-header {
@@ -612,7 +938,7 @@ body.light-theme #auth-main::after {
 }
 
 /* ==========================================
-   11. Like/Save Button Active States
+   15. Like/Save Button Active States
    ========================================== */
 
 #btn-like.btn-danger {
@@ -631,7 +957,7 @@ body.light-theme #auth-main::after {
 }
 
 /* ==========================================
-   12. Review Cards
+   16. Review Cards
    ========================================== */
 
 .review-card {
@@ -643,7 +969,7 @@ body.light-theme #auth-main::after {
 }
 
 /* ==========================================
-   13. Pagination Styles
+   17. Pagination Styles
    ========================================== */
 
 .pagination .page-link {
@@ -664,12 +990,14 @@ body.light-theme #auth-main::after {
 }
 
 /* ==========================================
-   14. Dropdown Menu Theme Adaptation
+   18. Dropdown Menu Theme Adaptation
    ========================================== */
 
 .dropdown-menu {
     background-color: var(--bg-card) !important;
     border: 1px solid var(--border-color) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
 }
 .dropdown-item {
     color: var(--text-primary) !important;
@@ -685,7 +1013,7 @@ body.light-theme #auth-main::after {
 }
 
 /* ==========================================
-   15. Developer Cards
+   19. Developer Cards
    ========================================== */
 
 .developer-card {
@@ -697,7 +1025,7 @@ body.light-theme #auth-main::after {
 }
 
 /* ==========================================
-   16. Breadcrumb Theme
+   20. Breadcrumb Theme
    ========================================== */
 
 .breadcrumb {
@@ -709,4 +1037,96 @@ body.light-theme #auth-main::after {
 }
 .breadcrumb-item.active {
     color: var(--text-secondary);
+}
+
+/* ==========================================
+   21. Category Page
+   ========================================== */
+
+.category-page-main {
+    background: var(--section-bg) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* ==========================================
+   22. Misc Bootstrap Overrides for both modes
+   ========================================== */
+
+/* Border utilities */
+.border-top, .border-bottom, .border-start, .border-end, .border {
+    border-color: var(--border-color) !important;
+}
+.border-secondary {
+    border-color: var(--border-color) !important;
+}
+.border-light {
+    border-color: var(--glass-border) !important;
+}
+.border-primary {
+    border-color: var(--accent-purple) !important;
+}
+
+/* bg-dark override for sections that still use it */
+.bg-dark {
+    background-color: var(--section-bg-alt) !important;
+}
+
+/* bg-secondary-subtle */
+.bg-secondary-subtle {
+    background-color: var(--bg-card-hover) !important;
+}
+
+/* Form check */
+.form-check-input {
+    background-color: var(--input-bg) !important;
+    border-color: var(--border-color) !important;
+}
+.form-check-input:checked {
+    background-color: var(--accent-purple) !important;
+    border-color: var(--accent-purple) !important;
+}
+.form-check-label {
+    color: var(--text-secondary) !important;
+}
+
+/* Spinner */
+.spinner-grow {
+    color: var(--accent-purple) !important;
+}
+
+/* text-primary override */
+.text-primary {
+    color: var(--accent-purple) !important;
+}
+
+/* Shadow override */
+.shadow-sm {
+    box-shadow: var(--shadow-card) !important;
+}
+.shadow-lg {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), var(--shadow-purple-glow) !important;
+}
+
+/* Nav pills for auth */
+.nav-pills .nav-link {
+    color: var(--text-secondary);
+}
+
+/* Responsive adjustments for movie reel */
+@media (max-width: 768px) {
+    .movie-reel-container {
+        height: 350px;
+    }
+    .movie-reel-poster {
+        height: 160px;
+    }
+}
+@media (max-width: 576px) {
+    .movie-reel-container {
+        height: 280px;
+    }
+    .movie-reel-poster {
+        height: 130px;
+    }
 }
