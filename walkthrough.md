@@ -168,3 +168,147 @@ To prevent the local database size from bloat, movie posters and deep metadata (
 - Administrators have access to an `/admin` route.
 - Admins can add new movies manually via a web form.
 - Admins can inspect the system-wide numbers (users, movies, reviews) and delete violating reviews, movies, or user accounts.
+
+---
+
+## 6. Database Schema & Relationships
+
+The database system is initialized in [models/database.py](file:///c:/Users/nikhi/OneDrive/Desktop/Group%20Pro/Cinema-Scale/models/database.py) and utilizes standard SQLAlchemy ORM models mapped to an SQL backend. Below is the detailed architecture and column-by-column breakdown of the tables.
+
+### A. Entity Relationship Diagram (ERD)
+
+The relations between users, movies, likes, watchlists (saved movies), and reviews are structured as follows:
+
+```mermaid
+erDiagram
+    users {
+        int id PK
+        string username
+        string email UK
+        string password_hash
+        boolean is_admin
+        datetime created_at
+    }
+    movies {
+        int id PK
+        string tmdb_id
+        string title
+        string genre
+        int year
+        text plot
+        float rating
+        string poster_path
+        int runtime
+        bigint budget
+        bigint revenue
+        string status
+        string original_language
+        text production_companies
+        text production_countries
+        string spoken_languages
+        boolean adult
+        float popularity
+        int vote_count
+    }
+    likes {
+        int id PK
+        int user_id FK
+        int movie_id FK
+        datetime timestamp
+    }
+    reviews {
+        int id PK
+        int user_id FK
+        int movie_id FK
+        int rating
+        text comment
+        datetime timestamp
+    }
+    saved_movies {
+        int id PK
+        int user_id FK
+        int movie_id FK
+        datetime timestamp
+    }
+
+    users ||--o{ likes : "likes"
+    movies ||--o{ likes : "liked_by"
+    users ||--o{ reviews : "writes"
+    movies ||--o{ reviews : "reviewed_by"
+    users ||--o{ saved_movies : "saves"
+    movies ||--o{ saved_movies : "saved_by"
+```
+
+### B. Table Definitions & Column Specifications
+
+#### 1. Users Table (`users`)
+Defined in [models/user.py](file:///c:/Users/nikhi/OneDrive/Desktop/Group%20Pro/Cinema-Scale/models/user.py).
+
+| Column | SQLAlchemy Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `db.Integer` | `Primary Key` | Unique identifier for each user profile. |
+| `username` | `db.String(100)` | `NOT NULL` (Default: `'user'`) | Display name of the user. |
+| `email` | `db.String(255)` | `Unique`, `NOT NULL` | The unique email address used for login authentication. |
+| `password_hash` | `db.String(255)` | `NOT NULL` | Direct password hashing output for security. |
+| `is_admin` | `db.Boolean` | `NOT NULL` (Default: `False`) | Permissions flag designating whether the user can access admin dashboard routes. |
+| `created_at` | `db.DateTime` | `NOT NULL` (Default: `UTC Now`) | Date and time the account was registered. |
+
+#### 2. Movies Table (`movies`)
+Defined in [models/movie.py](file:///c:/Users/nikhi/OneDrive/Desktop/Group%20Pro/Cinema-Scale/models/movie.py).
+
+| Column | SQLAlchemy Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `db.Integer` | `Primary Key` | Unique serial ID of the movie inside the database cache. |
+| `tmdb_id` | `db.String(100)` | `Nullable` | TMDB API identifier for mapping live metadata queries. |
+| `title` | `db.String(255)` | `NOT NULL` | The movie title. Used for vectorizing similarities. |
+| `genre` | `db.String(100)` | `NOT NULL` | Main genre list associated with the movie. |
+| `year` | `db.Integer` | `NOT NULL` | Release year. |
+| `plot` | `db.Text` | `NOT NULL` | Plot synopsis. |
+| `rating` | `db.Float` | `NOT NULL` | Average rating (calculated or pre-loaded). |
+| `poster_path` | `db.String(500)` | `Nullable` | CDN/upload URL to the movie's poster image. |
+| `runtime` | `db.Integer` | `Nullable` | Runtime in minutes, queried on-demand. |
+| `budget` | `db.BigInteger` | `Nullable` | Budget of the film (in USD), queried on-demand. |
+| `revenue` | `db.BigInteger` | `Nullable` | Box office revenue (in USD), queried on-demand. |
+| `status` | `db.String(100)` | `Nullable` | Release status (e.g., Released). |
+| `original_language` | `db.String(50)` | `Nullable` | Original spoken language of production. |
+| `production_companies` | `db.Text` | `Nullable` | Comma-separated or JSON list of production companies. |
+| `production_countries` | `db.Text` | `Nullable` | Countries of production. |
+| `spoken_languages` | `db.String(255)` | `Nullable` | Languages spoken in the film. |
+| `adult` | `db.Boolean` | `Nullable` (Default: `False`) | Mature content flag. |
+| `popularity` | `db.Float` | `Nullable` | TMDB popularity rank score. |
+| `vote_count` | `db.Integer` | `Nullable` | Total votes registered. |
+
+#### 3. Likes Table (`likes`)
+Defined in [models/like.py](file:///c:/Users/nikhi/OneDrive/Desktop/Group%20Pro/Cinema-Scale/models/like.py).
+Acts as a join table linking users and their liked movies, with a `UniqueConstraint('user_id', 'movie_id')` to prevent duplicate likes.
+
+| Column | SQLAlchemy Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `db.Integer` | `Primary Key` | Join entry row identifier. |
+| `user_id` | `db.Integer` | `ForeignKey("users.id")`, `NOT NULL` | Reference to the liking user. |
+| `movie_id` | `db.Integer` | `ForeignKey("movies.id")`, `NOT NULL` | Reference to the liked movie. |
+| `timestamp` | `db.DateTime` | `NOT NULL` (Default: `UTC Now`) | Timestamp when the user liked the movie. |
+
+#### 4. Reviews Table (`reviews`)
+Defined in [models/review.py](file:///c:/Users/nikhi/OneDrive/Desktop/Group%20Pro/Cinema-Scale/models/review.py).
+Manages individual ratings (1-10) and comment text submitted by users for specific films.
+
+| Column | SQLAlchemy Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `db.Integer` | `Primary Key` | Review serial ID. |
+| `user_id` | `db.Integer` | `ForeignKey("users.id")`, `NOT NULL` | Reference to the reviewing user. |
+| `movie_id` | `db.Integer` | `ForeignKey("movies.id")`, `NOT NULL` | Reference to the reviewed movie. |
+| `rating` | `db.Integer` | `NOT NULL` | Numerical rating score out of 10. |
+| `comment` | `db.Text` | `Nullable` | Written review text. |
+| `timestamp` | `db.DateTime` | `NOT NULL` (Default: `UTC Now`) | Timestamp when the review was created. |
+
+#### 5. Saved Movies Table (`saved_movies`)
+Defined in [models/saved_movie.py](file:///c:/Users/nikhi/OneDrive/Desktop/Group%20Pro/Cinema-Scale/models/saved_movie.py).
+A join table representing the user's Watchlist / Saved Movies bookmarks, with a `UniqueConstraint('user_id', 'movie_id')` to enforce single bookmarking.
+
+| Column | SQLAlchemy Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `db.Integer` | `Primary Key` | Saved entry row identifier. |
+| `user_id` | `db.Integer` | `ForeignKey("users.id")`, `NOT NULL` | Reference to the bookmarking user. |
+| `movie_id` | `db.Integer` | `ForeignKey("movies.id")`, `NOT NULL` | Reference to the bookmarked movie. |
+| `timestamp` | `db.DateTime` | `NOT NULL` (Default: `UTC Now`) | Timestamp when the movie was added to the watchlist. |

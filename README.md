@@ -69,6 +69,76 @@ For a detailed walkthrough of the implementation details, see [walkthrough.md](f
 
 ---
 
+## 🗄️ Database Schema
+
+The database is built on **SQLAlchemy** ORM mapping onto a SQLite database locally (or PostgreSQL in production). It models users, movie listings (including cached TMDB metadata), user likes, watchlists (saved movies), and movie ratings/reviews.
+
+### Entity Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    users {
+        int id PK
+        string username
+        string email UK
+        string password_hash
+        boolean is_admin
+        datetime created_at
+    }
+    movies {
+        int id PK
+        string tmdb_id
+        string title
+        string genre
+        int year
+        text plot
+        float rating
+        string poster_path
+        int runtime
+        bigint budget
+        bigint revenue
+        string status
+        string original_language
+        text production_companies
+        text production_countries
+        string spoken_languages
+        boolean adult
+        float popularity
+        int vote_count
+    }
+    likes {
+        int id PK
+        int user_id FK
+        int movie_id FK
+        datetime timestamp
+    }
+    reviews {
+        int id PK
+        int user_id FK
+        int movie_id FK
+        int rating
+        text comment
+        datetime timestamp
+    }
+    saved_movies {
+        int id PK
+        int user_id FK
+        int movie_id FK
+        datetime timestamp
+    }
+
+    users ||--o{ likes : "likes"
+    movies ||--o{ likes : "liked_by"
+    users ||--o{ reviews : "writes"
+    movies ||--o{ reviews : "reviewed_by"
+    users ||--o{ saved_movies : "saves"
+    movies ||--o{ saved_movies : "saved_by"
+```
+
+For more details on specific database columns and relations, refer to the [walkthrough.md](file:///c:/Users/nikhi/OneDrive/Desktop/Group%20Pro/Cinema-Scale/walkthrough.md#6-database-schema--relationships) documentation.
+
+---
+
 ## 💻 Installation & Local Setup
 
 ### Prerequisites
