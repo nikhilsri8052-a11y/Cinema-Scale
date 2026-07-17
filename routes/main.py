@@ -26,6 +26,21 @@ def register_main_routes(app, movies_df, similarity_matrix, list_of_all_titles):
         ).distinct().order_by(Movie.original_language).all()
         all_languages = sorted(set(lang[0].strip() for lang in all_languages if lang[0] and lang[0].strip()))
 
+        # Fetch 15 random movies with posters for the home page hero animation
+        animation_movies = Movie.query.filter(
+            Movie.poster_path.isnot(None),
+            Movie.poster_path != '',
+            Movie.poster_path.like('http%')
+        ).order_by(sqlalchemy.func.random()).limit(15).all()
+
+        # Fallback in case database has less than 15 movies with valid posters
+        if len(animation_movies) < 15:
+            extra = Movie.query.filter(
+                Movie.poster_path.isnot(None), 
+                Movie.poster_path != ''
+            ).limit(15 - len(animation_movies)).all()
+            animation_movies.extend(extra)
+
         # Check if any filter is active
         has_filters = any([search_query, genre_filter, year_min, year_max, rating_min, language_filter])
 
@@ -73,7 +88,8 @@ def register_main_routes(app, movies_df, similarity_matrix, list_of_all_titles):
                 language_filter=language_filter,
                 all_genres=all_genres,
                 all_languages=all_languages,
-                categorized_movies={}
+                categorized_movies={},
+                animation_movies=animation_movies
             )
 
         # 1. Fetch data from DB first
@@ -115,7 +131,8 @@ def register_main_routes(app, movies_df, similarity_matrix, list_of_all_titles):
             language_filter=language_filter,
             all_genres=all_genres,
             all_languages=all_languages,
-            categorized_movies=categorized_movies
+            categorized_movies=categorized_movies,
+            animation_movies=animation_movies
         )
 
     @app.route("/category/<genre>")
